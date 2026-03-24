@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smit Patel - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        
+        /* Modern Glassmorphism & Gradients */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #4f46e5, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-secondary {
+            background: linear-gradient(135deg, #0ea5e9, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Image Styling */
+        .hero-image-wrapper {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.2);
+            animation: morphing 8s ease-in-out infinite;
+            border: 4px solid white;
+        }
+
+        @keyframes morphing {
+            0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+            25% { border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%; }
+            50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
+            75% { border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%; }
+            100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .signature-img {
+            max-width: 180px;
+            mix-blend-mode: multiply;
+            opacity: 0.9;
+        }
+
+        /* Nav Link Active State */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: #4f46e5;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link.active {
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        /* Project Cards */
+        .project-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Decorative blobs */
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body class="relative antialiased selection:bg-indigo-200 selection:text-indigo-900">
+
+    <!-- Background Blobs -->
+    <div class="blob bg-indigo-300 w-96 h-96 rounded-full top-0 left-0 mix-blend-multiply"></div>
+    <div class="blob bg-pink-300 w-96 h-96 rounded-full top-40 right-20 mix-blend-multiply"></div>
+    <div class="blob bg-emerald-200 w-96 h-96 rounded-full bottom-0 left-1/3 mix-blend-multiply"></div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav fixed w-full z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="#home" class="text-2xl font-bold tracking-tight text-slate-800 hover:text-indigo-600 transition">
+                    Smit<span class="text-indigo-600">Patel</span>.
+                </a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link text-slate-600 hover:text-indigo-600 font-medium">Home</a>
+                    <a href="#about" class="nav-link text-slate-600 hover:text-indigo-600 font-medium">About</a>
+                    <a href="#projects" class="nav-link text-slate-600 hover:text-indigo-600 font-medium">Projects</a>
+                    <a href="#education" class="nav-link text-slate-600 hover:text-indigo-600 font-medium">Education</a>
+                    <a href="#contact" class="nav-link text-slate-600 hover:text-indigo-600 font-medium">Contact</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-indigo-600 focus:outline-none">
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden glass-card border-t border-white/20">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#home" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50">Home</a>
+                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50">About</a>
+                <a href="#projects" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50">Projects</a>
+                <a href="#education" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50">Education</a>
+                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="pt-32 pb-20 md:pt-40 md:pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-screen flex items-center">
+            <div class="flex flex-col-reverse md:flex-row items-center justify-between gap-12 w-full">
+                <div class="md:w-3/5 text-center md:text-left">
+                    <div class="inline-flex items-center px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-sm font-semibold mb-6">
+                        <span class="flex h-2 w-2 rounded-full bg-indigo-600 mr-2 animate-pulse"></span>
+                        Electrical Engineer & AI Enthusiast
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+                        Hi, I'm <br/>
+                        <span class="text-gradient-primary">Smit Patel</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-slate-600 mb-8 max-w-2xl leading-relaxed">
+                        A passionate and versatile engineer developing innovative solutions across power electronics, artificial intelligence, and embedded systems. I thrive on transforming complex ideas into impactful realities.
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 mb-8">
+                        <a href="#projects" class="w-full sm:w-auto px-8 py-3 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-200 transition-all flex items-center justify-center">
+                            View My Work <i data-lucide="arrow-right" class="ml-2 h-4 w-4"></i>
+                        </a>
+                        <a href="#contact" class="w-full sm:w-auto px-8 py-3 rounded-xl bg-white border border-slate-200 text-slate-700 font-semibold hover:border-indigo-600 hover:text-indigo-600 transition-all">
+                            Get In Touch
+                        </a>
+                    </div>
+                    
+                    <div class="flex items-center justify-center md:justify-start space-x-6">
+                        <a href="https://github.com/smitpate/" target="_blank" class="text-slate-400 hover:text-slate-800 transition-colors">
+                            <i data-lucide="github" class="h-7 w-7"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=smit-patel-6a8b87261" target="_blank" class="text-slate-400 hover:text-blue-600 transition-colors">
+                            <i data-lucide="linkedin" class="h-7 w-7"></i>
+                        </a>
+                        <a href="https://www.instagram.com/smit.patel.123" target="_blank" class="text-slate-400 hover:text-pink-600 transition-colors">
+                            <i data-lucide="instagram" class="h-7 w-7"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-2/5 flex flex-col items-center">
+                    <div class="hero-image-wrapper mb-8">
+                        <!-- Updated to use the correct image extension -->
+                        <img src="My ChatGPT image.jpg" alt="Smit Patel" class="hero-image" onerror="this.src='https://placehold.co/400x400/e2e8f0/475569?text=SP'; this.onerror=null;">
+                    </div>
+                    <img src="164e99a3-cb6a-4f56-91f1-6cdab619a3a4.jpg" alt="Signature" class="signature-img">
+                </div>
+            </div>
+        </section>
+
+        <!-- What I Do (Skills) Section -->
+        <section id="about" class="py-20 bg-white/50 border-y border-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-4">Areas of <span class="text-gradient-secondary">Expertise</span></h2>
+                    <p class="text-slate-600 text-lg">Bridging the gap between hardware and software to build intelligent, efficient systems.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- EE Card -->
+                    <div class="glass-card rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300">
+                        <div class="h-14 w-14 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center mb-6">
+                            <i data-lucide="cpu" class="h-7 w-7"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-slate-800">Electrical & Electronics</h3>
+                        <p class="text-slate-600 mb-6 leading-relaxed">
+                            Designing and implementing robust electronic systems, power electronics, embedded systems, and intricate control architectures.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-medium border border-slate-200">Power Electronics</span>
+                            <span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-medium border border-slate-200">Control Systems</span>
+                            <span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-medium border border-slate-200">Embedded (Arduino/ESP32)</span>
+                            <span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-medium border border-slate-200">Circuit Design</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Card -->
+                    <div class="glass-card rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300">
+                        <div class="h-14 w-14 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center mb-6">
+                            <i data-lucide="brain-circuit" class="h-7 w-7"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-slate-800">AI, ML & Simulation</h3>
+                        <p class="text-slate-600 mb-6 leading-relaxed">
+                            Building intelligent systems, developing detection algorithms, and simulating complex environments using cutting-edge tools.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-medium border border-slate-200">MATLAB & Simulink</span>
+                            <span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-medium border border-slate-200">OPAL-RT (HIL)</span>
+                            <span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-medium border border-slate-200">Python</span>
+                            <span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-medium border border-slate-200">Machine Learning</span>
+                        </div>
+                    </div>
+
+                    <!-- Web Dev Card -->
+                    <div class="glass-card rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300">
+                        <div class="h-14 w-14 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-6">
+                            <i data-lucide="code" class="h-7 w-7"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-slate-800">Web Development</h3>
+                        <p class="text-slate-600 mb-6 leading-relaxed">
+                            Crafting responsive, dynamic websites and interactive interfaces with a strong focus on user experience and modern design.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-medium border border-slate-200">HTML5/CSS3</span>
+                            <span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-medium border border-slate-200">JavaScript</span>
+                            <span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-medium border border-slate-200">WordPress</span>
+                            <span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-medium border border-slate-200">Tailwind CSS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-4">Featured <span class="text-gradient-primary">Projects</span></h2>
+                    <p class="text-slate-600 text-lg">A showcase of my recent engineering and research developments.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                    
+                    <!-- Project 1 -->
+                    <div class="glass-card project-card rounded-2xl overflow-hidden bg-white">
+                        <div class="h-48 bg-slate-200 relative overflow-hidden flex items-center justify-center">
+                            <!-- Visual placeholder representing AI/Waves -->
+                            <div class="absolute inset-0 bg-gradient-to-br from-indigo-900 to-purple-800 opacity-90"></div>
+                            <i data-lucide="activity" class="h-20 w-20 text-white/50 relative z-10"></i>
+                            <div class="absolute top-4 right-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">Ongoing</div>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-2">AI-Assisted SVPWM Sector Detection (RMS)</h3>
+                            <p class="text-slate-600 mb-6 line-clamp-3">
+                                Developing an AI-assisted sector detection algorithm for 3-Level Space Vector PWM (SVPWM) in multilevel inverter control. Generating training datasets through MATLAB/Simulink models and exploring real-time Hardware-In-the-Loop (HIL) implementation using the OPAL-RT simulation platform.
+                            </p>
+                            <div class="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
+                                <span class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-1 rounded">MATLAB/Simulink</span>
+                                <span class="text-xs font-semibold text-purple-600 bg-purple-50 px-2 py-1 rounded">AI/ML</span>
+                                <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">OPAL-RT HIL</span>
+                                <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">Power Electronics</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="glass-card project-card rounded-2xl overflow-hidden bg-white">
+                        <div class="h-48 bg-slate-200 relative overflow-hidden flex items-center justify-center">
+                            <div class="absolute inset-0 bg-gradient-to-br from-teal-700 to-emerald-900 opacity-90"></div>
+                            <i data-lucide="hand" class="h-20 w-20 text-white/50 relative z-10"></i>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-2">Active Stabilization Spoon</h3>
+                            <p class="text-slate-500 text-sm mb-4">Innovation Odyssey</p>
+                            <p class="text-slate-600 mb-6">
+                                Designed and developed a 2-axis servo motor-based active stabilization spoon for individuals with hand tremors (e.g., Parkinson’s disease). Implemented real-time motion compensation to reduce vibration amplitude and improve usability for daily activities.
+                            </p>
+                            <div class="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
+                                <span class="text-xs font-semibold text-teal-600 bg-teal-50 px-2 py-1 rounded">Embedded Systems</span>
+                                <span class="text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-1 rounded">Servo Motors</span>
+                                <span class="text-xs font-semibold text-rose-600 bg-rose-50 px-2 py-1 rounded">Control Systems</span>
+                                <span class="text-xs font-semibold text-slate-600 bg-slate-100 px-2 py-1 rounded">Healthcare Tech</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="glass-card project-card rounded-2xl overflow-hidden bg-white">
+                        <div class="h-48 bg-slate-200 relative overflow-hidden flex items-center justify-center">
+                            <div class="absolute inset-0 bg-gradient-to-br from-orange-600 to-red-800 opacity-90"></div>
+                            <i data-lucide="bot" class="h-20 w-20 text-white/50 relative z-10"></i>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-2">Maze-Solver Robot</h3>
+                            <p class="text-slate-600 mb-6">
+                                Designed and built a maze-solver robot using two DC motors and a custom-designed chassis. Integrated three IR sensors for path detection and a rotating front caster wheel for smoother turning and efficient maze navigation.
+                            </p>
+                            <div class="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
+                                <span class="text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-1 rounded">Robotics</span>
+                                <span class="text-xs font-semibold text-red-600 bg-red-50 px-2 py-1 rounded">IR Sensors</span>
+                                <span class="text-xs font-semibold text-yellow-600 bg-yellow-50 px-2 py-1 rounded">Hardware Design</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div class="glass-card project-card rounded-2xl overflow-hidden bg-white">
+                        <div class="h-48 bg-slate-200 relative overflow-hidden flex items-center justify-center">
+                            <div class="absolute inset-0 bg-gradient-to-br from-blue-700 to-indigo-900 opacity-90"></div>
+                            <i data-lucide="zap" class="h-20 w-20 text-white/50 relative z-10"></i>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-2">MOSFET H-Bridge Inverter (EPSD)</h3>
+                            <p class="text-slate-600 mb-6">
+                                Designed and implemented a MOSFET-based H-Bridge inverter utilizing the SG3525 PWM controller and IR2110 gate driver. Validated switching performance and captured output waveforms using a Digital Storage Oscilloscope (DSO).
+                            </p>
+                            <div class="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
+                                <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">Power Electronics</span>
+                                <span class="text-xs font-semibold text-slate-600 bg-slate-100 px-2 py-1 rounded">MOSFET</span>
+                                <span class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-1 rounded">PWM</span>
+                                <span class="text-xs font-semibold text-cyan-600 bg-cyan-50 px-2 py-1 rounded">Circuit Testing</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 5 (From Old Site) -->
+                    <div class="glass-card project-card rounded-2xl overflow-hidden bg-white md:col-span-2 lg:col-span-2">
+                        <div class="md:flex">
+                            <div class="md:w-1/3 h-48 md:h-auto bg-slate-200 relative overflow-hidden flex items-center justify-center">
+                                <div class="absolute inset-0 bg-gradient-to-br from-slate-700 to-slate-900 opacity-90"></div>
+                                <i data-lucide="speaker" class="h-20 w-20 text-white/50 relative z-10"></i>
+                            </div>
+                            <div class="p-8 md:w-2/3">
+                                <h3 class="text-2xl font-bold text-slate-800 mb-2">Class A Amplifier Design</h3>
+                                <p class="text-slate-500 text-sm mb-4">Semester 3 Project</p>
+                                <p class="text-slate-600 mb-6">
+                                    Designed and simulated a Class A audio amplifier focusing on achieving low distortion and understanding biasing techniques. This project involved circuit analysis, component selection, and performance evaluation using simulation software.
+                                </p>
+                                <div class="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
+                                    <span class="text-xs font-semibold text-slate-600 bg-slate-100 px-2 py-1 rounded">Analog Electronics</span>
+                                    <span class="text-xs font-semibold text-slate-600 bg-slate-100 px-2 py-1 rounded">Circuit Design</span>
+                                    <span class="text-xs font-semibold text-slate-600 bg-slate-100 px-2 py-1 rounded">Simulation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Education & Certifications -->
+        <section id="education" class="py-20 bg-white/50 border-y border-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                    <!-- Education Column -->
+                    <div>
+                        <h2 class="text-3xl font-bold mb-8 flex items-center">
+                            <i data-lucide="graduation-cap" class="mr-3 text-indigo-600"></i> Education
+                        </h2>
+                        
+                        <div class="glass-card rounded-2xl p-8 border-l-4 border-l-indigo-600 relative overflow-hidden">
+                            <!-- Faded background logo -->
+                            <img src="OIP.jpg" alt="Nirma University Logo" class="absolute -right-10 -bottom-10 opacity-5 w-64 grayscale">
+                            
+                            <div class="relative z-10">
+                                <img src="OIP.jpg" alt="Nirma Logo" class="h-16 object-contain mb-6 rounded bg-white p-2 shadow-sm" onerror="this.style.display='none'">
+                                <h3 class="text-2xl font-bold text-slate-800 mb-1">Institute of Technology, Nirma University</h3>
+                                <p class="text-indigo-600 font-semibold mb-4">B.Tech in Electrical Engineering <span class="text-slate-500 font-normal ml-2">(Batch of 2027)</span></p>
+                                
+                                <p class="text-slate-600 mb-4">Comprehensive study in electrical and electronics engineering. Key coursework includes:</p>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-700">
+                                    <div class="flex items-center"><i data-lucide="check-circle-2" class="h-4 w-4 mr-2 text-indigo-400"></i> Power Systems</div>
+                                    <div class="flex items-center"><i data-lucide="check-circle-2" class="h-4 w-4 mr-2 text-indigo-400"></i> Control Systems</div>
+                                    <div class="flex items-center"><i data-lucide="check-circle-2" class="h-4 w-4 mr-2 text-indigo-400"></i> VLSI Design</div>
+                                    <div class="flex items-center"><i data-lucide="check-circle-2" class="h-4 w-4 mr-2 text-indigo-400"></i> Analog/Digital Electronics</div>
+                                    <div class="flex items-center"><i data-lucide="check-circle-2" class="h-4 w-4 mr-2 text-indigo-400"></i> Microcontrollers</div>
+                                    <div class="flex items-center"><i data-lucide="check-circle-2" class="h-4 w-4 mr-2 text-indigo-400"></i> Communication Systems</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2 class="text-3xl font-bold mb-8 mt-16 flex items-center">
+                            <i data-lucide="briefcase" class="mr-3 text-emerald-600"></i> Experience & Roles
+                        </h2>
+                        <div class="space-y-6">
+                            <div class="glass-card p-6 rounded-xl border-l-4 border-l-emerald-500">
+                                <h4 class="font-bold text-lg text-slate-800">Computer Society of India (CSI)</h4>
+                                <p class="text-sm text-emerald-600 font-medium mb-2">Executive Member <span class="text-slate-400 font-normal">| Nirma University Chapter</span></p>
+                                <p class="text-slate-600 text-sm">Organized coding competitions and workshops. Enhanced skills in DSA and competitive programming.</p>
+                            </div>
+                            <div class="glass-card p-6 rounded-xl border-l-4 border-l-emerald-500">
+                                <h4 class="font-bold text-lg text-slate-800">Freelancer</h4>
+                                <p class="text-sm text-emerald-600 font-medium mb-2">Web Developer & Digital Marketer</p>
+                                <p class="text-slate-600 text-sm">Provided freelance website development and managed Google Ads campaigns for multiple clients.</p>
+                            </div>
+                            <div class="glass-card p-6 rounded-xl border-l-4 border-l-emerald-500">
+                                <h4 class="font-bold text-lg text-slate-800">National Cadet Corps (NCC) & NSS</h4>
+                                <p class="text-sm text-emerald-600 font-medium mb-2">Cadet / Volunteer</p>
+                                <p class="text-slate-600 text-sm">Engaged in community service, leadership training, and 7-day residential social outreach camps.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Certifications Column -->
+                    <div>
+                        <h2 class="text-3xl font-bold mb-8 flex items-center">
+                            <i data-lucide="award" class="mr-3 text-orange-500"></i> Certifications
+                        </h2>
+                        
+                        <div class="space-y-4">
+                            <!-- Cert 1: MATLAB -->
+                            <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=b11d84ae-a235-4d9b-85a2-b82c5ba7e3d1&" target="_blank" class="block group">
+                                <div class="glass-card p-5 rounded-xl flex items-center transition-all group-hover:bg-white group-hover:shadow-md group-hover:border-orange-300">
+                                    <div class="bg-orange-100 p-3 rounded-lg mr-4 group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                                        <i data-lucide="bar-chart-2" class="h-6 w-6 text-orange-600 group-hover:text-white"></i>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h4 class="font-bold text-slate-800 group-hover:text-orange-600 transition-colors">MATLAB Onramp</h4>
+                                        <p class="text-sm text-slate-500">MathWorks (MATLAB Academy)</p>
+                                    </div>
+                                    <i data-lucide="external-link" class="h-5 w-5 text-slate-400 group-hover:text-orange-500"></i>
+                                </div>
+                            </a>
+
+                            <!-- Cert 2: AI -->
+                            <a href="https://www.guvi.in/share-certificate/w9m8Ut00251RL264H9" target="_blank" class="block group">
+                                <div class="glass-card p-5 rounded-xl flex items-center transition-all group-hover:bg-white group-hover:shadow-md group-hover:border-purple-300">
+                                    <div class="bg-purple-100 p-3 rounded-lg mr-4 group-hover:bg-purple-500 group-hover:text-white transition-colors">
+                                        <i data-lucide="bot" class="h-6 w-6 text-purple-600 group-hover:text-white"></i>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h4 class="font-bold text-slate-800 group-hover:text-purple-600 transition-colors">Artificial Intelligence</h4>
+                                        <p class="text-sm text-slate-500">GUVI Geek Networks, IITM</p>
+                                    </div>
+                                    <i data-lucide="external-link" class="h-5 w-5 text-slate-400 group-hover:text-purple-500"></i>
+                                </div>
+                            </a>
+
+                            <!-- Cert 3: Python -->
+                            <a href="https://www.guvi.in/share-certificate/711q6939wgc44K5mP3" target="_blank" class="block group">
+                                <div class="glass-card p-5 rounded-xl flex items-center transition-all group-hover:bg-white group-hover:shadow-md group-hover:border-blue-300">
+                                    <div class="bg-blue-100 p-3 rounded-lg mr-4 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                                        <i data-lucide="terminal" class="h-6 w-6 text-blue-600 group-hover:text-white"></i>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h4 class="font-bold text-slate-800 group-hover:text-blue-600 transition-colors">Python Programming</h4>
+                                        <p class="text-sm text-slate-500">GUVI Geek Networks, IITM</p>
+                                    </div>
+                                    <i data-lucide="external-link" class="h-5 w-5 text-slate-400 group-hover:text-blue-500"></i>
+                                </div>
+                            </a>
+
+                            <!-- Cert 4: WordPress -->
+                            <a href="https://www.udemy.com/certificate/UC-c9643411-517b-4b54-aea0-64c9c09f89a6/" target="_blank" class="block group">
+                                <div class="glass-card p-5 rounded-xl flex items-center transition-all group-hover:bg-white group-hover:shadow-md group-hover:border-pink-300">
+                                    <div class="bg-pink-100 p-3 rounded-lg mr-4 group-hover:bg-pink-500 group-hover:text-white transition-colors">
+                                        <i data-lucide="layout" class="h-6 w-6 text-pink-600 group-hover:text-white"></i>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h4 class="font-bold text-slate-800 group-hover:text-pink-600 transition-colors">WordPress Website Development</h4>
+                                        <p class="text-sm text-slate-500">Udemy</p>
+                                    </div>
+                                    <i data-lucide="external-link" class="h-5 w-5 text-slate-400 group-hover:text-pink-500"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 relative overflow-hidden">
+            <div class="absolute inset-0 bg-slate-900 z-0"></div>
+            <!-- decorative background -->
+            <div class="absolute top-0 right-0 w-1/2 h-full bg-indigo-900/20 blur-3xl rounded-full translate-x-1/2 z-0"></div>
+            
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <h2 class="text-3xl md:text-5xl font-bold mb-6 text-white">Let's Build Something <span class="text-indigo-400">Together</span></h2>
+                <p class="text-slate-300 text-lg mb-10 max-w-2xl mx-auto">
+                    Whether you have a question, a project idea, or just want to connect regarding engineering and AI, feel free to drop a message.
+                </p>
+                
+                <div class="bg-white p-2 rounded-2xl shadow-2xl">
+                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe5_Tr1t5BuOYCbHWUDvrw1b7SrMByAKBsvEiFtuITVoR8H4Q/viewform?embedded=true" width="100%" height="700" frameborder="0" marginheight="0" marginwidth="0" class="rounded-xl">Loading…</iframe>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-950 text-slate-400 py-10 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="text-xl font-bold text-white tracking-tight">Smit<span class="text-indigo-500">Patel</span>.</span>
+            </div>
+            <p class="text-sm">&copy; <span id="year"></span> Smit Patel. All rights reserved.</p>
+            <div class="flex space-x-4 mt-4 md:mt-0">
+                <a href="https://github.com/smitpate/" target="_blank" class="hover:text-white transition"><i data-lucide="github" class="h-5 w-5"></i></a>
+                <a href="https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=smit-patel-6a8b87261" target="_blank" class="hover:text-white transition"><i data-lucide="linkedin" class="h-5 w-5"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Set Copyright Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Scroll Spy / Active Nav Link Highlighting
+        const sections = document.querySelectorAll('section');
+        const navLinksDesktop = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            // Add shadow to navbar on scroll
+            const nav = document.querySelector('nav');
+            if(window.scrollY > 50) {
+                nav.classList.add('shadow-md');
+            } else {
+                nav.classList.remove('shadow-md');
+            }
+
+            // Determine active section
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinksDesktop.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
