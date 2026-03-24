@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smit Patel - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light gray background */
+            color: #1a202c; /* Dark gray text */
+        }
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .bg-gradient-primary {
+            background-image: linear-gradient(to right, #4f46e5, #c026d3); /* Indigo to Fuchsia */
+        }
+        .bg-gradient-secondary {
+            background-image: linear-gradient(to right, #10b981, #06b6d4); /* Emerald to Cyan */
+        }
+        .bg-gradient-tertiary {
+            background-image: linear-gradient(to right, #f59e0b, #ef4444); /* Amber to Red */
+        }
+        .bg-gradient-skill-web {
+            background-image: linear-gradient(to right, #3b82f6, #14b8a6); /* Blue to Teal */
+        }
+        .bg-gradient-skill-ai {
+            background-image: linear-gradient(to right, #8b5cf6, #ec4899); /* Violet to Pink */
+        }
+        .bg-gradient-skill-ee {
+            background-image: linear-gradient(to right, #f97316, #facc15); /* Orange to Yellow */
+        }
+        .nav-link {
+            @apply px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900 transition-colors;
+        }
+        .nav-link-active {
+            @apply px-3 py-2 rounded-md text-sm font-medium bg-gradient-primary text-white;
+        }
+        .signature-image { /* For the actual signature image */
+            width: 200px; /* Adjust as needed */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 0.375rem;
+        }
+        .profile-image-container { /* For the circular profile image */
+            width: 256px; /* w-64 */
+            height: 256px; /* h-64 */
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); /* shadow-lg */
+        }
+        @media (min-width: 640px) { /* sm breakpoint */
+            .profile-image-container {
+                width: 320px; /* w-80 */
+                height: 320px; /* h-80 */
+            }
+        }
+
+        .card {
+            @apply bg-white shadow-xl rounded-lg p-6 transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col;
+        }
+        .card-interactive { /* For "What I Do" skill boxes */
+             @apply bg-white shadow-lg rounded-xl p-6 transition-all duration-300 hover:shadow-2xl hover:ring-2 hover:ring-indigo-400;
+        }
+        .card-content {
+            @apply flex-grow;
+        }
+        .section-title {
+            @apply text-4xl sm:text-5xl font-bold mb-10 text-center; /* Increased size and margin */
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+        .hidden {
+            display: none;
+        }
+        /* Accordion styles for Experience page */
+        .accordion-item {
+            @apply bg-white shadow-lg rounded-lg mb-4 overflow-hidden;
+        }
+        .accordion-header { /* Ensure items are spaced for icon on right */
+            @apply flex justify-between items-center p-4 sm:p-5 cursor-pointer bg-gray-100 hover:bg-gray-200 transition-colors;
+        }
+        .accordion-title {
+            @apply text-lg sm:text-xl font-semibold text-indigo-700;
+        }
+        .accordion-icon { /* Placed on the right by flex justify-between */
+            @apply text-indigo-600 transform transition-transform duration-300;
+        }
+        .accordion-content {
+            @apply p-0 border-t border-gray-200; /* Remove padding here, add to inner items */
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .accordion-content.open {
+            max-height: 1500px; /* Adjust as needed for content */
+        }
+        .experience-entry-container { /* New class for padding inside accordion */
+             @apply p-4 sm:p-5 space-y-4; /* Add space between entries */
+        }
+        .experience-entry { /* Styling for individual entries inside accordion */
+            @apply bg-slate-50 p-4 border border-slate-200 rounded-lg hover:shadow-md transition-shadow;
+        }
+        .experience-logo {
+            @apply w-12 h-12 sm:w-16 sm:h-16 object-contain mr-4 rounded-md bg-gray-200 p-1;
+        }
+        .project-card {
+            @apply bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl;
+        }
+        .project-image {
+            @apply w-full h-56 object-cover;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#home" class="text-2xl font-bold gradient-text bg-gradient-primary" data-page="home">
+                        Smit Patel
+                    </a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="nav-link nav-link-active" data-page="home">Home</a>
+                        <a href="#education" class="nav-link" data-page="education">Education</a>
+                        <a href="#experience" class="nav-link" data-page="experience">Experience</a>
+                        <a href="#projects" class="nav-link" data-page="projects">Projects</a>
+                        <a href="#contact" class="nav-link" data-page="contact">Contact Me</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="block nav-link nav-link-active" data-page="home">Home</a>
+                <a href="#education" class="block nav-link" data-page="education">Education</a>
+                <a href="#experience" class="block nav-link" data-page="experience">Experience</a>
+                <a href="#projects" class="block nav-link" data-page="projects">Projects</a>
+                <a href="#contact" class="block nav-link" data-page="contact">Contact Me</a>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content" class="pt-8">
+
+        <section id="home" class="page active min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between md:items-start mb-16">
+                    <div class="md:w-2/3 mb-8 md:mb-0">
+                        <h1 class="text-5xl sm:text-6xl font-bold mb-4">
+                            Hi, I'm <span class="gradient-text bg-gradient-primary">Smit Patel</span>
+                        </h1>
+                        <p id="bio-text" class="text-xl text-gray-700 mb-6">
+                            A passionate and versatile engineer with a knack for developing innovative solutions across web technologies, artificial intelligence, and electronics. I thrive on tackling complex challenges and transforming ideas into impactful realities.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="https://github.com/smitpate/" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-indigo-600 transition-colors" aria-label="GitHub Profile">
+                                <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.074 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.026 2.747-1.026.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" /></svg>
+                            </a>
+                            <a href="https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=smit-patel-6a8b87261" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-indigo-600 transition-colors" aria-label="LinkedIn Profile">
+                                <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                            </a>
+                             <a href="https://www.instagram.com/smit.patel.123?igsh=dzhneWVlZGJ1bmo5" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-indigo-600 transition-colors" aria-label="Instagram Profile">
+                                <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.272.058 2.166.247 2.948.565.79.32 1.445.78 2.096 1.433.65.65 1.113 1.305 1.433 2.096.318.782.507 1.676.565 2.948.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.058 1.272-.247 2.166-.565 2.948-.32.79-.78 1.445-1.433 2.096-.65.65-1.305 1.113-2.096 1.433-.782.318-1.676.507-2.948.565-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.272-.058-2.166-.247-2.948-.565-.79-.32-1.445-.78-2.096-1.433-.65-.65-1.113-1.305-1.433-2.096-.318-.782-.507-1.676-.565-2.948-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.058-1.272.247-2.166.565-2.948.32-.79.78-1.445 1.433-2.096.65-.65 1.305-1.113 2.096-1.433.782-.318 1.676-.507 2.948-.565C8.416 2.175 8.796 2.163 12 2.163m0-2.163C8.74 0 8.31.012 7.053.072c-1.28.06-2.278.248-3.148.578-.883.332-1.648.803-2.343 1.498C.868 2.837.397 3.602.067 4.485.007 5.08-.002 5.468 0 6.873v10.254c.002 1.404.012 1.792.072 3.07.06 1.278.248 2.277.578 3.147.332.883.803 1.648 1.498 2.343.695.695 1.46.905 2.343 1.235 1.28.33 1.67.34 4.923.34h.012c3.253 0 3.643-.01 4.923-.34.883-.33 1.648-.803 2.343-1.235.695-.695 1.166-1.46 1.498-2.343.33-.87.518-1.869.578-3.147.06-1.278.072-1.666.072-3.07V6.873c0-1.405-.012-1.792-.072-3.07-.06-1.278-.248-2.277-.578-3.147-.332-.883-.803-1.648-1.498-2.343-.695-.695-1.46-1.166-2.343-1.498C15.59.26 14.593.073 13.313.013 12.053 0 11.69 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="md:w-1/3 flex flex-col items-center md:items-end mt-8 md:mt-0">
+                        <img src="164e99a3-cb6a-4f56-91f1-6cdab619a3a4.jpg" alt="Smit Patel Signature" class="signature-image mb-4">
+                        <div class="profile-image-container" style="background-image: url('My ChatGPT image.png');" onerror="this.style.backgroundImage='url(https://placehold.co/300x150/A5B4FC/3730A3?text=Smit)'; this.onerror=null;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="py-16">
+                    <h1 class="section-title gradient-text bg-gradient-secondary">What I Do?</h1>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="card-interactive text-center">
+                            <div class="p-3 inline-block rounded-lg bg-gradient-skill-web mb-4">
+                                <svg class="h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-semibold mb-3 gradient-text bg-gradient-skill-web">Web Developer</h3>
+                            <p class="text-gray-600 mb-4">
+                                Crafting responsive and dynamic websites and web applications with a focus on user experience and modern design principles.
+                            </p>
+                            <div class="flex flex-wrap gap-2 justify-center">
+                                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">WordPress</span>
+                                <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm">HTML5</span>
+                                <span class="bg-sky-100 text-sky-700 px-3 py-1 rounded-full text-sm">CSS3</span>
+                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">JavaScript</span>
+                            </div>
+                        </div>
+
+                        <div class="card-interactive text-center">
+                             <div class="p-3 inline-block rounded-lg bg-gradient-skill-ai mb-4">
+                                <svg class="h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-semibold mb-3 gradient-text bg-gradient-skill-ai">AI and ML</h3>
+                            <p class="text-gray-600 mb-4">
+                                Building intelligent systems and leveraging data to create predictive models and gain insights using machine learning algorithms.
+                            </p>
+                            <div class="flex flex-wrap gap-2 justify-center">
+                                <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">Python</span>
+                                <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-sm">Scikit-learn</span>
+                                <span class="bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-sm">Kaggle</span>
+                            </div>
+                        </div>
+
+                        <div class="card-interactive text-center">
+                            <div class="p-3 inline-block rounded-lg bg-gradient-skill-ee mb-4">
+                                <svg class="h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M9 6h6M9 18h6m3-3V9M6 15V9"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-semibold mb-3 gradient-text bg-gradient-skill-ee">Electrical & Electronics</h3>
+                            <p class="text-gray-600 mb-4">
+                                Designing and implementing robust electronic systems, from microcontrollers to complex control systems and VLSI design.
+                            </p>
+                            <div class="flex flex-wrap gap-2 justify-center">
+                                <span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-sm">Control Systems</span>
+                                <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm">Arduino</span>
+                                <span class="bg-lime-100 text-lime-700 px-3 py-1 rounded-full text-sm">ESP32</span>
+                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">8051</span>
+                                <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm">VLSI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="page min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="section-title gradient-text bg-gradient-tertiary">Education</h2>
+
+                <div class="mb-16">
+                    <h3 class="text-2xl sm:text-3xl font-semibold mb-6 text-gray-800 text-center">Degrees Received</h3>
+                    <div class="bg-amber-50 shadow-xl rounded-lg p-6 sm:p-8 hover:shadow-2xl transition-shadow duration-300 border border-amber-200">
+                        <div class="flex flex-col sm:flex-row items-center justify-between mb-4">
+                            <a href="https://nirmauni.ac.in/" target="_blank" rel="noopener noreferrer" class="block mb-4 sm:mb-0 sm:mr-6">
+                                <img src="OIP.jpg" alt="Nirma University Logo" class="h-20 sm:h-24 object-contain" onerror="this.src='https://placehold.co/150x80/FEF3C7/B45309?text=Nirma+Logo'; this.onerror=null;">
+                            </a>
+                            <div class="text-center sm:text-left flex-grow">
+                                <h4 class="text-2xl sm:text-3xl font-bold text-amber-700">
+                                     <a href="https://nirmauni.ac.in/" target="_blank" rel="noopener noreferrer" class="hover:underline">Institute of Technology, Nirma University</a>
+                                </h4>
+                                <p class="text-lg sm:text-xl text-amber-600">Electrical Engineering(Batch of 2027)</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-4">
+                            A comprehensive program focused on the principles and applications of electrical and electronics engineering. Key areas of study included:
+                        </p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1 columns-1 sm:columns-2">
+                            <li>Digital Electronics</li>
+                            <li>Analog Electronics</li>
+                            <li>Microcontrollers and Microprocessors</li>
+                            <li>Fundamentals of Power Systems</li>
+                            <li>Control Systems Design</li>
+                            <li>VLSI Design Fundamentals</li>
+                            <li>Communication Systems</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl sm:text-3xl font-semibold mb-8 text-gray-800 text-center">Certifications</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="card">
+                            <img src="https://placehold.co/300x150/BFDBFE/1E40AF?text=GUVI+Python" alt="Guvi Python Certificate Badge" class="rounded-t-lg w-full h-40 object-cover mb-4" onerror="this.src='https://placehold.co/300x150/E0E7FF/4338CA?text=Python+Cert'; this.onerror=null;">
+                            <div class="card-content">
+                                <h4 class="text-lg font-semibold text-blue-600 mb-1">Python Programming</h4>
+                                <p class="text-sm text-gray-500 mb-2">
+                                    Issued by <a href="https://www.guvi.in/" target="_blank" rel="noopener noreferrer" class="hover:underline text-blue-500">GUVI Geek Networks, IITM Research Park</a>
+                                </p>
+                                <p class="text-gray-600 text-sm mb-3">
+                                    Successfully completed a comprehensive course on Python programming, covering fundamentals to advanced concepts.
+                                </p>
+                            </div>
+                            <a href="https://www.guvi.in/share-certificate/711q6939wgc44K5mP3" target="_blank" rel="noopener noreferrer" class="inline-block mt-auto text-sm text-blue-500 hover:text-blue-700 font-medium self-start pt-2">View Credential &rarr;</a>
+                        </div>
+
+                        <div class="card">
+                            <img src="https://placehold.co/300x150/A7F3D0/047857?text=GUVI+AI" alt="Guvi AI Certificate Badge" class="rounded-t-lg w-full h-40 object-cover mb-4" onerror="this.src='https://placehold.co/300x150/D1FAE5/059669?text=AI+Cert'; this.onerror=null;">
+                             <div class="card-content">
+                                <h4 class="text-lg font-semibold text-green-600 mb-1">Artificial Intelligence</h4>
+                                <p class="text-sm text-gray-500 mb-2">
+                                     Issued by <a href="https://www.guvi.in/" target="_blank" rel="noopener noreferrer" class="hover:underline text-green-500">GUVI Geek Networks, IITM Research Park</a>
+                                </p>
+                                <p class="text-gray-600 text-sm mb-3">
+                                    Completed an intensive program on Artificial Intelligence, exploring core concepts and practical applications.
+                                </p>
+                            </div>
+                            <a href="https://www.guvi.in/share-certificate/w9m8Ut00251RL264H9" target="_blank" rel="noopener noreferrer" class="inline-block mt-auto text-sm text-green-500 hover:text-green-700 font-medium self-start pt-2">View Credential &rarr;</a>
+                        </div>
+
+                        <div class="card">
+                            <img src="https://placehold.co/300x150/FDE68A/92400E?text=MATLAB+Onramp" alt="Matlab Onramp Certificate Badge" class="rounded-t-lg w-full h-40 object-cover mb-4" onerror="this.src='https://placehold.co/300x150/FEF3C7/B45309?text=MATLAB+Cert'; this.onerror=null;">
+                            <div class="card-content">
+                                <h4 class="text-lg font-semibold text-amber-600 mb-1">MATLAB Onramp</h4>
+                                <p class="text-sm text-gray-500 mb-2">
+                                    Issued by <a href="https://www.mathworks.com/" target="_blank" rel="noopener noreferrer" class="hover:underline text-amber-500">MathWorks (MATLAB Academy)</a>
+                                </p>
+                                <p class="text-gray-600 text-sm mb-3">
+                                    Gained foundational knowledge of MATLAB for data analysis, visualization, and programming.
+                                </p>
+                            </div>
+                            <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=b11d84ae-a235-4d9b-85a2-b82c5ba7e3d1&" target="_blank" rel="noopener noreferrer" class="inline-block mt-auto text-sm text-amber-500 hover:text-amber-700 font-medium self-start pt-2">View Credential &rarr;</a>
+                        </div>
+
+                        <div class="card">
+                            <img src="https://placehold.co/300x150/FBCFE8/9D174D?text=Udemy+WordPress" alt="Udemy WordPress Certificate Badge" class="rounded-t-lg w-full h-40 object-cover mb-4" onerror="this.src='https://placehold.co/300x150/FCE7F3/DB2777?text=Udemy+Cert'; this.onerror=null;">
+                            <div class="card-content">
+                                <h4 class="text-lg font-semibold text-pink-600 mb-1">WordPress Website Development</h4>
+                                <p class="text-sm text-gray-500 mb-2">
+                                    Issued by <a href="https://www.udemy.com/" target="_blank" rel="noopener noreferrer" class="hover:underline text-pink-500">Udemy</a>
+                                </p>
+                                <p class="text-gray-600 text-sm mb-3">
+                                    Mastered WordPress development, from basic setup to advanced customization and theme building.
+                                </p>
+                            </div>
+                            <a href="https://www.udemy.com/certificate/UC-c9643411-517b-4b54-aea0-64c9c09f89a6/" target="_blank" rel="noopener noreferrer" class="inline-block mt-auto text-sm text-pink-500 hover:text-pink-700 font-medium self-start pt-2">View Credential &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="page min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="section-title gradient-text bg-gradient-primary">Experience</h2>
+                <p class="text-center text-lg text-gray-600 mb-10">My journey through various roles and learning opportunities.</p>
+
+                <div class="accordion-container space-y-3">
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3 class="accordion-title">Work & Organizational Roles</h3>
+                            <span class="accordion-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                            </span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="experience-entry-container">
+                                <div class="experience-entry">
+                                    <div class="flex items-start sm:items-center">
+                                        <img src="https://placehold.co/80x80/D1FAE5/059669?text=NCC" alt="NCC Logo" class="experience-logo">
+                                        <div>
+                                            <h4 class="text-lg font-semibold text-gray-800">National Cadet Corps (NCC)</h4>
+                                            <p class="text-sm text-gray-500 mb-1">Cadet</p>
+                                            <p class="text-gray-600 text-sm">Key learnings and contributions: Unity, Discipline, Leadership, Teamwork, and Community Service.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="experience-entry">
+                                    <div class="flex items-start sm:items-center">
+                                        <img src="https://placehold.co/80x80/E0E7FF/4338CA?text=CSI" alt="CSI Logo" class="experience-logo">
+                                        <div>
+                                            <h4 class="text-lg font-semibold text-gray-800">Computer Society of India (CSI), Nirma University Chapter</h4>
+                                            <p class="text-sm text-gray-500 mb-1">Executive Member</p>
+                                            <p class="text-gray-600 text-sm">Actively participated in organizing events, workshops, and coding competitions. Enhanced skills in Data Structures & Algorithms (DSA) and competitive programming (Codeforces).</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="experience-entry">
+                                    <div class="flex items-start sm:items-center">
+                                         <img src="https://placehold.co/80x80/FEF3C7/B45309?text=EESA" alt="EESA Logo" class="experience-logo">
+                                        <div>
+                                            <h4 class="text-lg font-semibold text-gray-800">Electrical Engineering Students Association (EESA)</h4>
+                                            <p class="text-sm text-gray-500 mb-1">Member</p>
+                                            <p class="text-gray-600 text-sm">Contributed to association activities, gaining experience in event management and time management.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3 class="accordion-title">Internships</h3>
+                            <span class="accordion-icon">
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                            </span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="experience-entry-container">
+                                <div class="experience-entry">
+                                     <div class="flex items-start sm:items-center">
+                                        <img src="https://placehold.co/80x80/BFDBFE/1E40AF?text=Freelance" alt="Freelancer Logo" class="experience-logo">
+                                        <div>
+                                            <h4 class="text-lg font-semibold text-gray-800">Freelancer</h4>
+                                            <p class="text-sm text-gray-500 mb-1">Web Developer & Digital Marketer</p>
+                                            <p class="text-gray-600 text-sm">Provided freelance services in website development, digital marketing strategies, and managing Google Ads campaigns for various clients.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3 class="accordion-title">Volunteership</h3>
+                            <span class="accordion-icon">
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                            </span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="experience-entry-container">
+                                <div class="experience-entry">
+                                    <div class="flex items-start sm:items-center">
+                                        <img src="https://placehold.co/80x80/FECACA/7F1D1D?text=NSS" alt="NSS Logo" class="experience-logo">
+                                        <div>
+                                            <h4 class="text-lg font-semibold text-gray-800">National Service Scheme (NSS)</h4>
+                                            <p class="text-sm text-gray-500 mb-1">Volunteer</p>
+                                            <p class="text-gray-600 text-sm">Participated in a 7-day residential camp, engaging in community service activities and social outreach programs.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="page min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="section-title gradient-text bg-gradient-secondary">Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="project-card">
+                        <img src="https://placehold.co/600x400/BFDBFE/1E40AF?text=Class+A+Amplifier" alt="Class A Amplifier Project" class="project-image" onerror="this.src='https://placehold.co/600x400/E0E7FF/4338CA?text=Project+Image'; this.onerror=null;">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-indigo-700 mb-2">Class A Amplifier Design</h3>
+                            <p class="text-sm text-gray-500 mb-1">Semester 3 Project</p>
+                            <p class="text-gray-600 text-sm mb-4">
+                                Designed and simulated a Class A audio amplifier focusing on achieving low distortion and understanding biasing techniques. This project involved circuit analysis, component selection, and performance evaluation using simulation software.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-sky-100 text-sky-700 px-2 py-1 rounded-full text-xs">Circuit Design</span>
+                                <span class="bg-lime-100 text-lime-700 px-2 py-1 rounded-full text-xs">Analog Electronics</span>
+                                <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs">Simulation</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <img src="https://placehold.co/600x400/A7F3D0/047857?text=Project+Two" alt="Project Two" class="project-image" onerror="this.src='https://placehold.co/600x400/D1FAE5/059669?text=Project+Image'; this.onerror=null;">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-green-700 mb-2">Upcoming Project Title</h3>
+                             <p class="text-sm text-gray-500 mb-1">Tech Stack / Category</p>
+                            <p class="text-gray-600 text-sm mb-4">
+                                Brief description of another exciting project will go here. Highlighting key features and technologies used.
+                            </p>
+                             <div class="flex flex-wrap gap-2">
+                                <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-xs">Tech 1</span>
+                                <span class="bg-pink-100 text-pink-700 px-2 py-1 rounded-full text-xs">Tech 2</span>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="project-card">
+                        <img src="https://placehold.co/600x400/FBCFE8/9D174D?text=Project+Three" alt="Project Three" class="project-image" onerror="this.src='https://placehold.co/600x400/FCE7F3/DB2777?text=Project+Image'; this.onerror=null;">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-rose-700 mb-2">Another Cool Project</h3>
+                             <p class="text-sm text-gray-500 mb-1">Domain / Field</p>
+                            <p class="text-gray-600 text-sm mb-4">
+                                Details about a third project, showcasing a different skill or area of interest.
+                            </p>
+                             <div class="flex flex-wrap gap-2">
+                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded-full text-xs">Skill A</span>
+                                <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs">Tool B</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="page min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="section-title gradient-text bg-gradient-tertiary">Contact Me</h2>
+                <p class="text-xl text-gray-600 mb-8">Have a question or want to work together? Fill out the form below or reach out via my social channels!</p>
+                
+                <div class="bg-white p-6 sm:p-8 rounded-lg shadow-xl">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-6">Send me a message</h3>
+                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe5_Tr1t5BuOYCbHWUDvrw1b7SrMByAKBsvEiFtuITVoR8H4Q/viewform?embedded=true" width="100%" height="750" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                    <p class="text-xs text-gray-500 mt-4">If the form above doesn't load correctly, please ensure the link is a valid Google Forms embed URL.</p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; <span id="currentYear"></span> Smit Patel. All rights reserved.</p>
+            <p class="text-sm text-gray-400 mt-1">Designed with passion and code.</p>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const hamburgerIcon = mobileMenuButton.querySelector('svg:first-child');
+        const closeIcon = mobileMenuButton.querySelector('svg:last-child');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page');
+        const mainContent = document.getElementById('main-content');
+        const currentYearSpan = document.getElementById('currentYear');
+
+        // --- UI Functions ---
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+            hamburgerIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        }
+
+        function setActivePage(pageId) {
+            pages.forEach(page => page.classList.toggle('active', page.id === pageId));
+            navLinks.forEach(link => {
+                const isLinkActive = link.dataset.page === pageId;
+                link.classList.toggle('nav-link-active', isLinkActive);
+                link.classList.toggle('text-gray-700', !isLinkActive);
+                link.classList.toggle('hover:bg-gray-200', !isLinkActive);
+                link.classList.toggle('hover:text-gray-900', !isLinkActive);
+            });
+            mainContent.scrollTop = 0;
+            window.scrollTo({ top: mainContent.offsetTop - 80, behavior: 'smooth' }); 
+            if (!mobileMenu.classList.contains('hidden')) {
+                toggleMobileMenu();
+            }
+        }
+
+        function handleNavLinkClick(e) {
+            e.preventDefault();
+            const pageId = this.dataset.page;
+            setActivePage(pageId);
+            history.pushState(null, null, `#${pageId}`);
+        }
+
+        function setInitialPage() {
+            const hash = window.location.hash.substring(1);
+            const validPageIds = Array.from(pages).map(p => p.id);
+            if (hash && validPageIds.includes(hash)) {
+                setActivePage(hash);
+            } else {
+                setActivePage('home');
+                history.replaceState(null, null, '#home');
+            }
+        }
+
+        // Accordion Functionality for Experience Page
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const iconContainer = this.querySelector('.accordion-icon');
+                const icon = iconContainer.querySelector('svg'); 
+
+                const parentContainer = this.closest('.accordion-container');
+                if (parentContainer) {
+                    parentContainer.querySelectorAll('.accordion-content.open').forEach(openContent => {
+                        if (openContent !== content) {
+                            openContent.classList.remove('open');
+                            const otherIconContainer = openContent.previousElementSibling.querySelector('.accordion-icon');
+                            if (otherIconContainer) {
+                                const otherIcon = otherIconContainer.querySelector('svg');
+                                otherIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />'; 
+                            }
+                        }
+                    });
+                }
+                
+                content.classList.toggle('open');
+                if (content.classList.contains('open')) {
+                    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />'; 
+                } else {
+                    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />'; 
+                }
+            });
+        });
+
+
+        // --- Event Listeners ---
+        mobileMenuButton.addEventListener('click', toggleMobileMenu);
+        navLinks.forEach(link => link.addEventListener('click', handleNavLinkClick));
+        window.addEventListener('popstate', setInitialPage);
+
+        // --- Initialization ---
+        currentYearSpan.textContent = new Date().getFullYear();
+        setInitialPage();
+
+    </script>
+</body>
+</html>

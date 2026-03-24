@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyper Realistic Gravity Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: #000000; /* Black background */
+            color: #F3F4F6; /* Light text */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        #simulationContainer {
+            width: 100%;
+            height: 70vh; /* Adjust as needed */
+            max-height: 600px;
+            margin: 0 auto;
+            position: relative;
+            border-radius: 0.5rem;
+            overflow: hidden; 
+            cursor: grab; 
+        }
+        #simulationContainer.dragging {
+            cursor: grabbing; 
+        }
+        canvas {
+            display: block; 
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .control-panel {
+            background-color: rgba(31, 41, 55, 0.8); 
+            backdrop-filter: blur(10px);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        /* Styling for dynamically created buttons */
+        .planet-button {
+            background-color: #374151;
+            color: #F3F4F6;
+            border: 1px solid #4B5563;
+            padding: 0.5rem 1rem; /* Equivalent to p-2 px-4 */
+            margin: 0.25rem; /* Equivalent to m-1 */
+            border-radius: 0.375rem; /* Equivalent to rounded-md */
+            transition: background-color 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .planet-button:hover {
+            background-color: #4B5563; /* Darker hover */
+        }
+        .planet-button.active {
+            background-color: #60A5FA; /* Blue for active button */
+            border-color: #3B82F6;
+        }
+
+        .apod-card {
+            background-color: #1F2937; 
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-black text-gray-100">
+
+    <div class="container mx-auto p-4 max-w-6xl">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-teal-500 to-blue-500">
+                Interactive Gravity Well Simulation
+            </h1>
+            <p class="text-gray-400 mt-2">Click a button to summon a celestial body and observe its gravitational effect. Drag it around!</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="md:col-span-1 control-panel p-6">
+                <label class="block text-sm font-medium text-gray-300 mb-2">Choose a Celestial Body:</label>
+                <div id="planet-buttons-container" class="flex flex-wrap gap-2">
+                    </div>
+                <p class="mt-4 text-xs text-gray-400">
+                    <b>Mouse Controls:</b> <br/>
+                    - Left-click & drag on object: Move object <br/>
+                    - Left-click & drag on background: Rotate camera <br/>
+                    - Right-click & drag: Pan camera <br/>
+                    - Scroll wheel: Zoom camera
+                </p>
+            </div>
+
+            <div id="simulationContainer" class="md:col-span-2 bg-black rounded-lg shadow-2xl">
+                </div>
+        </div>
+
+        <div class="apod-card p-6 mt-12">
+            <h2 class="text-2xl font-semibold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-600">Astronomy Picture of the Day (NASA)</h2>
+            <div id="apod-loader" class="loader"></div>
+            <img id="astronomy-picture" src="https://placehold.co/800x600/1F2937/E5E7EB?text=Loading+APOD..." alt="Astronomy Picture of the Day" class="w-full max-w-2xl mx-auto rounded-md shadow-lg hidden" onerror="this.onerror=null; this.src='https://placehold.co/800x600/1F2937/E5E7EB?text=Error+Loading+Image'; this.classList.remove('hidden'); document.getElementById('apod-loader').style.display = 'none';">
+            <p id="astronomy-title" class="text-xl font-semibold mt-4 text-center text-gray-200"></p>
+            <p id="astronomy-explanation" class="mt-2 text-gray-300 text-justify leading-relaxed"></p>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="module">
+        // Import OrbitControls
+        import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/controls/OrbitControls.js';
+
+        let scene, camera, renderer, planetMesh, spacetimeMesh, controls;
+        let currentPlanetData = null; // No planet selected initially
+        const simulationContainer = document.getElementById('simulationContainer');
+        const planetButtonsContainer = document.getElementById('planet-buttons-container');
+
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        let isDraggingPlanet = false;
+        const dragPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0); 
+        const intersectionPoint = new THREE.Vector3();
+
+        const planetData = {
+            mercury: { name: "Mercury", radius: 0.38, mass: 1, color: 0x8C8C8C },
+            venus:   { name: "Venus", radius: 0.95, mass: 3, color: 0xD4A06A },
+            earth:   { name: "Earth", radius: 1, mass: 5, color: 0x4A90E2, initialPos: {x:0, z:0} },
+            mars:    { name: "Mars", radius: 0.53, mass: 2, color: 0xC1440E },
+            jupiter: { name: "Jupiter", radius: 5, mass: 50, color: 0xD8CA9D },
+            saturn:  { name: "Saturn", radius: 4, mass: 40, color: 0xFCE29B, hasRing: true },
+            uranus:  { name: "Uranus", radius: 2.5, mass: 20, color: 0xAFDBF5 },
+            neptune: { name: "Neptune", radius: 2.4, mass: 18, color: 0x5B82E5 },
+            sun:     { name: "Sun", radius: 10, mass: 200, color: 0xFFD700, emissive: 0xFFD700, isStar: true },
+            blackhole: { name: "Black Hole", radius: 2, mass: 500, color: 0x000000, isBlackHole: true }
+        };
+
+        function initThreeJS() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x000000); // Black background
+
+            const aspect = simulationContainer.clientWidth / simulationContainer.clientHeight;
+            camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 2000);
+            camera.position.set(15, 15, 15);
+            camera.lookAt(0, 0, 0);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false }); // Alpha false for solid black bg
+            renderer.setSize(simulationContainer.clientWidth, simulationContainer.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            simulationContainer.appendChild(renderer.domElement);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); 
+            scene.add(ambientLight);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2); 
+            directionalLight.position.set(5, 10, 7.5);
+            scene.add(directionalLight);
+
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.screenSpacePanning = false;
+            controls.minDistance = 5;
+            controls.maxDistance = 100;
+            controls.maxPolarAngle = Math.PI / 2 - 0.05; 
+
+            // Create buttons for planet selection
+            Object.entries(planetData).forEach(([key, data]) => {
+                const button = document.createElement('button');
+                button.textContent = data.name;
+                button.dataset.planetKey = key;
+                button.classList.add('planet-button'); 
+                
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.planet-button.active').forEach(activeBtn => activeBtn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    currentPlanetData = planetData[key];
+                    const initialX = currentPlanetData.initialPos ? currentPlanetData.initialPos.x : 0;
+                    const initialZ = currentPlanetData.initialPos ? currentPlanetData.initialPos.z : 0;
+                    
+                    // Create/update the planet first
+                    createOrUpdatePlanet(initialX, initialZ);
+                    // Then update the grid based on the new planet's data and position
+                    createOrUpdateSpacetimeGrid(initialX, initialZ, false); // false means not empty, use mass
+                });
+                planetButtonsContainer.appendChild(button);
+            });
+            
+            // Create initial flat, tilted spacetime grid
+            createOrUpdateSpacetimeGrid(0, 0, true); // true means empty, no deformation
+
+            renderer.domElement.addEventListener('mousedown', onMouseDown, false);
+            renderer.domElement.addEventListener('mousemove', onMouseMove, false);
+            renderer.domElement.addEventListener('mouseup', onMouseUp, false);
+            renderer.domElement.addEventListener('touchstart', onTouchStart, { passive: false });
+            renderer.domElement.addEventListener('touchmove', onTouchMove, { passive: false });
+            renderer.domElement.addEventListener('touchend', onTouchEnd, { passive: false });
+
+            window.addEventListener('resize', onWindowResize, false);
+            animate();
+        }
+
+        function createOrUpdatePlanet(posX = 0, posZ = 0) {
+            if (!currentPlanetData) { // Should not happen if a button is clicked, but good guard
+                if (planetMesh) { // If for some reason currentPlanetData is null, remove existing mesh
+                    scene.remove(planetMesh);
+                    planetMesh.geometry.dispose();
+                    if (planetMesh.material.dispose) planetMesh.material.dispose();
+                    if (planetMesh.ringMesh) {
+                        scene.remove(planetMesh.ringMesh);
+                        planetMesh.ringMesh.geometry.dispose();
+                        if (planetMesh.ringMesh.material.dispose) planetMesh.ringMesh.material.dispose();
+                    }
+                    planetMesh = null;
+                }
+                return;
+            }
+
+            if (planetMesh) {
+                scene.remove(planetMesh);
+                planetMesh.geometry.dispose();
+                if (planetMesh.material.dispose) planetMesh.material.dispose();
+                if (planetMesh.ringMesh) {
+                    scene.remove(planetMesh.ringMesh);
+                    planetMesh.ringMesh.geometry.dispose();
+                    if (planetMesh.ringMesh.material.dispose) planetMesh.ringMesh.material.dispose();
+                }
+                planetMesh = null; 
+            }
+
+            const { radius, color, emissive, isStar, isBlackHole, hasRing } = currentPlanetData;
+            const geometry = new THREE.SphereGeometry(radius, 64, 64);
+            let material;
+
+            if (isBlackHole) material = new THREE.MeshBasicMaterial({ color: 0x000000 });
+            else if (isStar) material = new THREE.MeshStandardMaterial({ color: color, emissive: emissive || color, emissiveIntensity: 1, metalness: 0.1, roughness: 0.8 });
+            else material = new THREE.MeshStandardMaterial({ color: color, metalness: 0.3, roughness: 0.6 });
+
+            planetMesh = new THREE.Mesh(geometry, material);
+            planetMesh.position.set(posX, radius, posZ); 
+            scene.add(planetMesh);
+
+            if (hasRing) {
+                const ringGeometry = new THREE.RingGeometry(radius * 1.2, radius * 2, 64);
+                const ringMaterial = new THREE.MeshBasicMaterial({ color: 0xAAAAAA, side: THREE.DoubleSide, transparent: true, opacity: 0.6 });
+                const ringMesh = new THREE.Mesh(ringGeometry, ringMaterial);
+                ringMesh.rotation.x = Math.PI / 2;
+                ringMesh.position.copy(planetMesh.position);
+                planetMesh.ringMesh = ringMesh;
+                scene.add(ringMesh);
+            }
+        }
+
+        function createOrUpdateSpacetimeGrid(planetX, planetZ, isEmpty = false) {
+            if (spacetimeMesh) {
+                scene.remove(spacetimeMesh);
+                spacetimeMesh.geometry.dispose();
+                spacetimeMesh.material.dispose();
+                spacetimeMesh = null; 
+            }
+
+            const gridSize = 50;
+            const gridDivisions = 50;
+            const massToUse = (currentPlanetData && !isEmpty) ? currentPlanetData.mass : 0;
+
+            const spacetimeSurfaceFunction = (u, v, target) => {
+                const x = (u - 0.5) * gridSize;
+                const z = (v - 0.5) * gridSize;
+                const dist = Math.sqrt(Math.pow(x - planetX, 2) + Math.pow(z - planetZ, 2));
+                const y = -massToUse / (Math.pow(dist, 0.7) + 1.5); 
+                target.set(x, y, z);
+            };
+
+            const geometry = new THREE.ParametricGeometry(spacetimeSurfaceFunction, gridDivisions, gridDivisions);
+            const material = new THREE.MeshStandardMaterial({ 
+                color: 0x2E8B57, 
+                wireframe: true, 
+                transparent: true, 
+                opacity: 0.7, 
+                metalness: 0.1, 
+                roughness: 0.9
+            });
+            spacetimeMesh = new THREE.Mesh(geometry, material);
+            spacetimeMesh.rotation.x = Math.PI / 16; 
+            scene.add(spacetimeMesh);
+        }
+
+        function updateMouseCoordinates(eventClientX, eventClientY, targetVector) {
+            const rect = renderer.domElement.getBoundingClientRect();
+            targetVector.x = ((eventClientX - rect.left) / rect.width) * 2 - 1;
+            targetVector.y = -((eventClientY - rect.top) / rect.height) * 2 + 1;
+        }
+        
+        function onMouseDown(event) {
+            event.preventDefault();
+            if (!planetMesh) return; 
+            updateMouseCoordinates(event.clientX, event.clientY, mouse);
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObject(planetMesh);
+
+            if (intersects.length > 0) {
+                isDraggingPlanet = true;
+                controls.enabled = false; 
+                simulationContainer.classList.add('dragging');
+            }
+        }
+
+        function onMouseMove(event) {
+            event.preventDefault();
+            if (isDraggingPlanet && planetMesh && currentPlanetData) { // Added currentPlanetData check
+                updateMouseCoordinates(event.clientX, event.clientY, mouse);
+                raycaster.setFromCamera(mouse, camera);
+                if (raycaster.ray.intersectPlane(dragPlane, intersectionPoint)) {
+                    planetMesh.position.x = intersectionPoint.x;
+                    planetMesh.position.z = intersectionPoint.z;
+                    planetMesh.position.y = currentPlanetData.radius; 
+
+                    if (planetMesh.ringMesh) {
+                        planetMesh.ringMesh.position.copy(planetMesh.position);
+                    }
+                    createOrUpdateSpacetimeGrid(planetMesh.position.x, planetMesh.position.z, false);
+                }
+            }
+        }
+
+        function onMouseUp(event) {
+            event.preventDefault();
+            if (isDraggingPlanet) {
+                isDraggingPlanet = false;
+                controls.enabled = true; 
+                simulationContainer.classList.remove('dragging');
+            }
+        }
+
+        function onTouchStart(event) {
+            if (event.touches.length === 1) { 
+                event.preventDefault(); 
+                if (!planetMesh) return;
+                const touch = event.touches[0];
+                updateMouseCoordinates(touch.clientX, touch.clientY, mouse); 
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObject(planetMesh);
+                if (intersects.length > 0) {
+                    isDraggingPlanet = true;
+                    controls.enabled = false;
+                    simulationContainer.classList.add('dragging');
+                }
+            }
+        }
+
+        function onTouchMove(event) {
+            if (event.touches.length === 1 && isDraggingPlanet && planetMesh && currentPlanetData) { // Added currentPlanetData check
+                event.preventDefault();
+                const touch = event.touches[0];
+                updateMouseCoordinates(touch.clientX, touch.clientY, mouse);
+                raycaster.setFromCamera(mouse, camera);
+                if (raycaster.ray.intersectPlane(dragPlane, intersectionPoint)) {
+                    planetMesh.position.x = intersectionPoint.x;
+                    planetMesh.position.z = intersectionPoint.z;
+                    planetMesh.position.y = currentPlanetData.radius;
+                    if (planetMesh.ringMesh) {
+                        planetMesh.ringMesh.position.copy(planetMesh.position);
+                    }
+                    createOrUpdateSpacetimeGrid(planetMesh.position.x, planetMesh.position.z, false);
+                }
+            }
+        }
+
+        function onTouchEnd(event) {
+            if (isDraggingPlanet) {
+                isDraggingPlanet = false;
+                controls.enabled = true;
+                simulationContainer.classList.remove('dragging');
+            }
+        }
+
+
+        function onWindowResize() {
+            if (!camera || !renderer || !simulationContainer) return;
+            const newWidth = simulationContainer.clientWidth;
+            const newHeight = simulationContainer.clientHeight;
+            camera.aspect = newWidth / newHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(newWidth, newHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            if (planetMesh && currentPlanetData && !currentPlanetData.isStar && !currentPlanetData.isBlackHole) {
+                planetMesh.rotation.y += 0.001;
+                 if (planetMesh.ringMesh) planetMesh.ringMesh.rotation.z += 0.0005;
+            }
+            renderer.render(scene, camera);
+        }
+
+        async function fetchAstronomyPicture() {
+            const apodLoader = document.getElementById('apod-loader');
+            const apodImage = document.getElementById('astronomy-picture');
+            const apodTitle = document.getElementById('astronomy-title');
+            const apodExplanation = document.getElementById('astronomy-explanation');
+            apodLoader.style.display = 'block';
+            apodImage.classList.add('hidden');
+            const apiKey = 'nBLckzM3xdBYrvTHL7co8e0JgSAjI37Xrq57uD3n'; 
+            const url = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+                if (data.media_type === "image") {
+                    apodImage.src = data.hdurl || data.url;
+                    apodImage.alt = data.title || "Astronomy Picture of the Day";
+                } else if (data.media_type === "video") {
+                    apodImage.src = 'https://placehold.co/800x600/1F2937/E5E7EB?text=Video+Content+(See+NASA)';
+                    apodImage.alt = data.title + " (Video)";
+                } else {
+                     apodImage.src = 'https://placehold.co/800x600/1F2937/E5E7EB?text=Unsupported+Media';
+                     apodImage.alt = "Unsupported APOD media type";
+                }
+                apodTitle.textContent = data.title || "N/A";
+                apodExplanation.textContent = data.explanation || "No explanation available.";
+            } catch (error) {
+                console.error('Error fetching astronomy picture:', error);
+                apodTitle.textContent = "Error Loading APOD";
+                apodExplanation.textContent = `Could not fetch the Astronomy Picture of the Day. Please try again. Details: ${error.message}`;
+                apodImage.src = 'https://placehold.co/800x600/1F2937/E5E7EB?text=Error+Loading+Image';
+                apodImage.alt = "Error loading APOD image";
+            } finally {
+                apodLoader.style.display = 'none';
+                apodImage.classList.remove('hidden');
+            }
+        }
+
+        // Initialize
+        initThreeJS();
+        fetchAstronomyPicture();
+    </script>
+</body>
+</html>

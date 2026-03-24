@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solar System Explorer</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+  <style>
+    #earth-model {
+      height: 400px;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+  <header class="bg-gray-800 p-4 text-center text-2xl font-bold">
+    Solar System Explorer
+  </header>
+  <main class="p-6 space-y-6">
+    <!-- Planet Information -->
+    <section class="bg-gray-800 rounded p-4">
+      <h2 class="text-xl font-semibold mb-2">Planet Information</h2>
+      <p>Select a planet to view details.</p>
+      <select id="planet-select" class="text-black mt-2 p-2 rounded">
+        <option value="earth">Earth</option>
+        <option value="mars">Mars</option>
+        <option value="jupiter">Jupiter</option>
+      </select>
+      <div id="planet-info" class="mt-4">Information will appear here...</div>
+    </section>
+
+    <!-- 3D Earth Model -->
+    <section class="bg-gray-800 rounded p-4">
+      <h2 class="text-xl font-semibold mb-2">3D Earth Model</h2>
+      <div id="earth-model"></div>
+    </section>
+
+    <!-- Solar System Diagram -->
+    <section class="bg-gray-800 rounded p-4">
+      <h2 class="text-xl font-semibold mb-2">Solar System Diagram</h2>
+      <canvas id="solar-system-diagram" width="600" height="300" class="bg-black rounded"></canvas>
+    </section>
+
+    <!-- Gravity Simulation -->
+    <section class="bg-gray-800 rounded p-4">
+      <h2 class="text-xl font-semibold mb-2">Gravity Orbit Simulation</h2>
+      <canvas id="orbit-simulation" width="600" height="300" class="bg-black rounded cursor-pointer"></canvas>
+      <p class="text-sm mt-2">Click to add a planet. Drag to move.</p>
+    </section>
+  </main>
+
+  <script>
+    // Planet information logic
+    const planetSelect = document.getElementById('planet-select');
+    const planetInfo = document.getElementById('planet-info');
+
+    const planetData = {
+      earth: 'Earth is our home planet. It has a breathable atmosphere and supports life.',
+      mars: 'Mars is known as the Red Planet. It may have supported microbial life in the past.',
+      jupiter: 'Jupiter is the largest planet in our solar system with a massive magnetic field.'
+    };
+
+    planetSelect.addEventListener('change', () => {
+      const selected = planetSelect.value;
+      planetInfo.textContent = planetData[selected];
+    });
+
+    // THREE.js Earth model setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, 600 / 400, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(600, 400);
+    document.getElementById('earth-model').appendChild(renderer.domElement);
+
+    const geometry = new THREE.SphereGeometry(1, 32, 32);
+    const texture = new THREE.TextureLoader().load('https://upload.wikimedia.org/wikipedia/commons/0/02/Blue_Marble_Eastern_Hemisphere.jpg');
+    const material = new THREE.MeshBasicMaterial({ map: texture });
+    const sphere = new THREE.Mesh(geometry, material);
+    scene.add(sphere);
+
+    camera.position.z = 3;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      sphere.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Solar system diagram using Canvas
+    const solarCanvas = document.getElementById('solar-system-diagram');
+    const ctxSolar = solarCanvas.getContext('2d');
+    ctxSolar.fillStyle = 'yellow';
+    ctxSolar.beginPath();
+    ctxSolar.arc(100, 150, 20, 0, Math.PI * 2); // Sun
+    ctxSolar.fill();
+    ctxSolar.fillStyle = 'blue';
+    ctxSolar.beginPath();
+    ctxSolar.arc(250, 150, 10, 0, Math.PI * 2); // Earth
+    ctxSolar.fill();
+
+    // Interactive Gravity Simulation
+    const orbitCanvas = document.getElementById('orbit-simulation');
+    const ctxOrbit = orbitCanvas.getContext('2d');
+    let planets = [];
+
+    class Planet {
+      constructor(x, y, vx = 0, vy = 0) {
+        this.x = x;
+        this.y = y;
+        this.vx = vx;
+        this.vy = vy;
+        this.radius = 5;
+        this.color = 'blue';
+      }
+
+      update(gravityCenter) {
+        let dx = gravityCenter.x - this.x;
+        let dy = gravityCenter.y - this.y;
+        let dist = Math.sqrt(dx * dx + dy * dy);
+        let force = 1000 / (dist * dist);
+        let ax = force * dx / dist;
+        let ay = force * dy / dist;
+        this.vx += ax;
+        this.vy += ay;
+        this.x += this.vx;
+        this.y += this.vy;
+      }
+
+      draw(ctx) {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    const sun = { x: 3000, y: 1500, radius: 1 };
+
+    orbitCanvas.addEventListener('click', e => {
+      const rect = orbitCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      planets.push(new Planet(x, y, Math.random() * 2 - 1, Math.random() * 2 - 1));
+    });
+
+    function drawOrbit() {
+      ctxOrbit.clearRect(0, 0, 600, 300);
+      ctxOrbit.fillStyle = 'yellow';
+      ctxOrbit.beginPath();
+      ctxOrbit.arc(sun.x, sun.y, sun.radius, 0, Math.PI * 2);
+      ctxOrbit.fill();
+
+      for (let planet of planets) {
+        planet.update(sun);
+        planet.draw(ctxOrbit);
+      }
+
+      requestAnimationFrame(drawOrbit);
+    }
+    drawOrbit();
+  </script>
+</body>
+</html>
