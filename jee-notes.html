@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JEE Notes — Smit Patel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0a07;
+            --surface: #141210;
+            --surface2: #1c1a15;
+            --border: rgba(255, 220, 100, 0.08);
+            --border-hover: rgba(255, 220, 100, 0.18);
+            --text: #f5f0e8;
+            --text-dim: #a09880;
+            --text-muted: #5a5244;
+            --gold: #f5c842;
+            --gold2: #e8a020;
+            --green: #5dd68a;
+            --blue: #58b4f0;
+            --pink: #f07090;
+            --radius: 20px;
+            --radius-sm: 10px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Noise grain effect */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Syne', sans-serif;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0 clamp(1.5rem, 5vw, 3rem);
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(11, 10, 7, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .nav-logo span {
+            color: var(--gold);
+        }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            text-decoration: none;
+            padding: 0.5rem 1.1rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-back:hover {
+            color: var(--text);
+            border-color: var(--border-hover);
+            background: var(--surface2);
+            transform: translateX(-3px);
+        }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 55vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 72px;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-glow {
+            position: absolute;
+            pointer-events: none;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .glow-gold {
+            width: 600px;
+            height: 400px;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: radial-gradient(circle, var(--gold), transparent 70%);
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            padding: 4rem clamp(1.5rem, 5vw, 2.5rem);
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(245, 200, 66, 0.08);
+            border: 1px solid rgba(245, 200, 66, 0.2);
+            border-radius: 100px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 7vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, #f5c842 0%, #f07090 50%, #58b4f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            line-height: 1.7;
+            max-width: 550px;
+            margin: 0 auto 3rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+
+        /* ── TABS ── */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.8rem 1.8rem;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-btn:hover {
+            border-color: var(--border-hover);
+            background: var(--surface2);
+            color: var(--text);
+        }
+
+        .tab-btn.active-phy {
+            background: rgba(93, 214, 138, 0.1);
+            border-color: rgba(93, 214, 138, 0.4);
+            color: var(--green);
+        }
+
+        .tab-btn.active-chem {
+            background: rgba(245, 200, 66, 0.1);
+            border-color: rgba(245, 200, 66, 0.4);
+            color: var(--gold);
+        }
+
+        .tab-btn.active-math {
+            background: rgba(88, 180, 240, 0.1);
+            border-color: rgba(88, 180, 240, 0.4);
+            color: var(--blue);
+        }
+
+        /* ── NOTES SECTIONS ── */
+        .notes-section {
+            display: none;
+            animation: slideUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .notes-section.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-desc {
+            font-size: 1rem;
+            color: var(--text-dim);
+        }
+
+        /* ── MASTER CARD ── */
+        .master-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: clamp(2rem, 5vw, 3.5rem);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3rem;
+            transition: all 0.4s ease;
+        }
+
+        .master-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Decorative Gradient Bar */
+        .master-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .phy-card::before {
+            background: linear-gradient(90deg, var(--green), #22d3ee);
+        }
+
+        .chem-card::before {
+            background: linear-gradient(90deg, var(--gold), var(--pink));
+        }
+
+        .math-card::before {
+            background: linear-gradient(90deg, var(--blue), #818cf8);
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-badge {
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card-title {
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            margin-bottom: 1.2rem;
+            color: var(--text);
+        }
+
+        .card-description {
+            font-size: 1rem;
+            color: var(--text-dim);
+            max-width: 500px;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 2rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .meta-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .dl-button {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            background: var(--text);
+            color: var(--bg);
+            padding: 2rem 3rem;
+            border-radius: 18px;
+            text-decoration: none;
+            font-weight: 800;
+            font-family: 'Syne', sans-serif;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 220px;
+        }
+
+        .dl-button span {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .dl-button .icon {
+            font-size: 1.8rem;
+        }
+
+        .dl-button:hover {
+            transform: scale(1.03);
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+        }
+
+        /* ── INFO BOX ── */
+        .info-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 4rem;
+            align-items: center;
+        }
+
+        .info-box span {
+            font-size: 2rem;
+        }
+
+        .info-box p {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            margin-top: 6rem;
+            padding: 4rem clamp(1.5rem, 5vw, 3rem);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            background: var(--surface);
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 900px) {
+            .master-card {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+                padding: 2.5rem 1.5rem;
+            }
+
+            .card-description {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .card-meta {
+                justify-content: center;
+            }
+
+            .dl-button {
+                width: 100%;
+                min-width: unset;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-stats {
+                gap: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2.8rem;
+            }
+
+            .tabs {
+                gap: 0.5rem;
+            }
+
+            .tab-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <a href="jee-notes.html" class="nav-logo">
+            <span>📓</span> JEE Notes
+        </a>
+        <a href="home.html" class="nav-back">
+            ← Back to Portfolio
+        </a>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-glow glow-gold"></div>
+        <div class="hero-inner">
+            <div class="hero-badge reveal">🚀 Master Resource Vault</div>
+            <h1 class="hero-title reveal">Full <span>Handwritten</span> Notes</h1>
+            <p class="hero-sub reveal">
+                Ditch the scattered pages. Download my complete preparation notebooks for Physics, Chemistry, and Math
+                in single, high-quality PDFs.
+            </p>
+            <div class="hero-stats reveal">
+                <div class="stat">
+                    <div class="stat-num">3</div>
+                    <div class="stat-label">Full Files</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num">800+</div>
+                    <div class="stat-label">Total Pages</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num">100%</div>
+                    <div class="stat-label">Free Access</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main style="max-width:1080px; margin:0 auto; padding:0 clamp(1.5rem, 5vw, 2.5rem) 5rem;">
+
+        <!-- TABS -->
+        <div class="tabs reveal">
+            <button class="tab-btn active-phy" onclick="switchTab('phy', this)">⚡ Physics</button>
+            <button class="tab-btn" onclick="switchTab('chem', this)">🧪 Chemistry</button>
+            <button class="tab-btn" onclick="switchTab('math', this)">📐 Mathematics</button>
+        </div>
+
+        <!-- ── PHYSICS ── -->
+        <div class="notes-section active" id="tab-phy">
+            <div class="section-header reveal">
+                <span class="section-icon">⚡</span>
+                <h2 class="section-title" style="color:var(--green);">Physics Vault</h2>
+                <p class="section-desc">Mechanics, Electrodynamics, Optics, & Modern Physics</p>
+            </div>
+
+            <div class="master-card phy-card reveal">
+                <div class="card-content">
+                    <span class="card-badge">Single Volume Download</span>
+                    <h3 class="card-title">Complete Physics Handwritten Notes</h3>
+                    <p class="card-description">
+                        My entire Physics journey in one file. Contains comprehensive theory, derivation shortcuts, and
+                        solved problems from Kinematics to Semiconductors. Optimized for JEE Mains & Advanced.
+                    </p>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Pages</span>
+                            <span class="meta-value">~240 High-Res</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Size</span>
+                            <span class="meta-value">42.5 MB</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Format</span>
+                            <span class="meta-value">PDF (OCR)</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="physics-master.pdf" class="dl-button" download>
+                    <span class="icon">📥</span>
+                    <span>Download Physics PDF</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ── CHEMISTRY ── -->
+        <div class="notes-section" id="tab-chem">
+            <div class="section-header reveal">
+                <span class="section-icon">🧪</span>
+                <h2 class="section-title" style="color:var(--gold);">Chemistry Vault</h2>
+                <p class="section-desc">Physical, Organic, & Inorganic Masterclasses</p>
+            </div>
+
+            <div class="master-card chem-card reveal">
+                <div class="card-content">
+                    <span class="card-badge">Single Volume Download</span>
+                    <h3 class="card-title">Complete Chemistry Handwritten Notes</h3>
+                    <p class="card-description">
+                        A consolidated guide including detailed reaction mechanisms, physical chemistry formula sheets,
+                        and essential inorganic trends. Categorized and color-coded for quick revision.
+                    </p>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Pages</span>
+                            <span class="meta-value">~310 High-Res</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Size</span>
+                            <span class="meta-value">55.2 MB</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Format</span>
+                            <span class="meta-value">PDF (OCR)</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="chemistry-master.pdf" class="dl-button" download>
+                    <span class="icon">📥</span>
+                    <span>Download Chemistry PDF</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ── MATHEMATICS ── -->
+        <div class="notes-section" id="tab-math">
+            <div class="section-header reveal">
+                <span class="section-icon">📐</span>
+                <h2 class="section-title" style="color:var(--blue);">Mathematics Vault</h2>
+                <p class="section-desc">Algebra, Calculus, Geometry, & Trigonometry</p>
+            </div>
+
+            <div class="master-card math-card reveal">
+                <div class="card-content">
+                    <span class="card-badge">Single Volume Download</span>
+                    <h3 class="card-title">Complete Mathematics Handwritten Notes</h3>
+                    <p class="card-description">
+                        Every theorem, proof, and JEE-specific trick I used. From Calculus to Coordinate Geometry, these
+                        notes focus on logic and fast problem-solving techniques for the toughest papers.
+                    </p>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Pages</span>
+                            <span class="meta-value">~280 High-Res</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Size</span>
+                            <span class="meta-value">38.9 MB</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Format</span>
+                            <span class="meta-value">PDF (OCR)</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="math-master.pdf" class="dl-button" download>
+                    <span class="icon">📥</span>
+                    <span>Download Math PDF</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- INFO BOX -->
+        <div class="info-box reveal">
+            <span>💡</span>
+            <p>
+                <strong>Note for Aspirants:</strong> These are high-resolution scans. I recommend downloading over
+                Wi-Fi. If you find these helpful, feel free to share the link with your peers. For any missing pages or
+                corrections, please
+                <a href="home1.html#contact" style="color:var(--gold); text-decoration: underline;">message me</a>.
+            </p>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>Handcrafted by <a href="home1.html">Smit Patel</a> • Class of 2023</p>
+        <p style="opacity: 0.5;">Not for commercial sale. Distributed freely for education.</p>
+    </footer>
+
+    <script>
+        // Tab switching logic
+        function switchTab(id, btn) {
+            // Remove active states
+            document.querySelectorAll('.notes-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active-phy', 'active-chem', 'active-math');
+            });
+
+            // Set new active states
+            document.getElementById('tab-' + id).classList.add('active');
+            btn.classList.add('active-' + id);
+
+            // Reset scroll position slightly for better UX
+            const offset = btn.offsetTop - 100;
+            window.scrollTo({ top: offset, behavior: 'smooth' });
+
+            // Refresh reveal animations in the new section
+            triggerSectionReveal(id);
+        }
+
+        function triggerSectionReveal(id) {
+            document.querySelectorAll('#tab-' + id + ' .reveal').forEach((el, index) => {
+                el.classList.remove('visible');
+                setTimeout(() => {
+                    el.classList.add('visible');
+                }, index * 100);
+            });
+        }
+
+        // Intersection Observer for scroll reveal
+        const revealCallback = (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(revealCallback, {
+            threshold: 0.1
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Initial trigger for the first section
+        window.addEventListener('DOMContentLoaded', () => {
+            triggerSectionReveal('phy');
+        });
+    </script>
+
+</body>
+
+</html>
