@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smit Patel — Electrical Engineer & AI Enthusiast</title>
+    <meta name="description" content="Smit Patel — Electrical Engineer & AI Enthusiast. Building intelligent solutions at the intersection of power electronics, AI, and embedded systems.">
+    <meta name="author" content="Smit Patel">
+    <meta name="theme-color" content="#050505">
+    <meta property="og:title" content="Smit Patel — Portfolio">
+    <meta property="og:description" content="Electrical Engineer & AI Enthusiast building intelligent solutions.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.13/dist/lenis.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Skip Navigation -->
+    <a href="#main-content" class="skip-nav">Skip to content</a>
+
+    <!-- ═══ PRELOADER ═══ -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-counter" id="preloader-counter">0</div>
+        <div class="preloader-text">
+            <span>P</span><span>O</span><span>R</span><span>T</span><span>F</span><span>O</span><span>L</span><span>I</span><span>O</span>
+        </div>
+        <div class="preloader-bar"><div class="preloader-fill" id="preloader-fill"></div></div>
+    </div>
+
+    <!-- ═══ CUSTOM CURSOR ═══ -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+
+    <!-- ═══ NAVIGATION ═══ -->
+    <nav class="nav" id="navbar">
+        <a href="#hero" class="nav-logo">Smit<span>Patel</span>.</a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="jee-notes.html" target="_blank" style="color:var(--amber);">📓 JEE Notes</a></li>
+        </ul>
+        <a href="#contact" class="nav-cta">Get In Touch</a>
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu">
+            <i data-lucide="menu" style="width:22px;height:22px;"></i>
+        </button>
+    </nav>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#hero">Home</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#education">Education</a>
+        <a href="#contact">Contact</a>
+        <a href="jee-notes.html" target="_blank" style="color:var(--amber);">📓 JEE Notes</a>
+    </div>
+
+    <!-- ═══ MAIN CONTENT ═══ -->
+    <main id="main-content">
+
+        <!-- ════════════ HERO ════════════ -->
+        <section class="hero" id="hero">
+            <canvas id="hero-canvas" class="hero-canvas"></canvas>
+            <div class="hero-glow hero-glow-1"></div>
+            <div class="hero-glow hero-glow-2"></div>
+
+            <div class="hero-inner">
+                <div class="hero-content">
+                    <div class="hero-badge reveal">
+                        <span class="dot"></span>
+                        Electrical Engineer &amp; AI Enthusiast
+                    </div>
+
+                    <h1 class="hero-title" id="hero-title">
+                        <span class="line"><span class="word">Hi, I'm</span></span>
+                        <span class="line"><span class="word grad-main">Smit Patel</span></span>
+                    </h1>
+
+                    <p class="hero-sub reveal">
+                        A passionate engineer building intelligent solutions at the intersection of
+                        power electronics, AI, and embedded systems — transforming complex ideas into real-world impact.
+                    </p>
+
+                    <div class="hero-actions reveal">
+                        <a href="#projects" class="btn-primary magnetic">
+                            View My Work <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+                        </a>
+                        <a href="#contact" class="btn-ghost magnetic">
+                            Get In Touch
+                        </a>
+                    </div>
+
+                    <div class="hero-socials reveal">
+                        <a href="https://github.com/smitpate/" target="_blank" rel="noopener" aria-label="GitHub" class="magnetic">
+                            <i data-lucide="github" style="width:18px;height:18px;"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=smit-patel-6a8b87261" target="_blank" rel="noopener" aria-label="LinkedIn" class="magnetic">
+                            <i data-lucide="linkedin" style="width:18px;height:18px;"></i>
+                        </a>
+                        <a href="https://www.instagram.com/smit.patel.123" target="_blank" rel="noopener" aria-label="Instagram" class="magnetic">
+                            <i data-lucide="instagram" style="width:18px;height:18px;"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-img-col reveal">
+                    <div class="hero-avatar">
+                        <img src="My ChatGPT image.png" alt="Smit Patel" loading="eager"
+                            onerror="this.src='https://placehold.co/400x400/0c0c14/818cf8?text=SP';">
+                    </div>
+                    <img src="164e99a3-cb6a-4f56-91f1-6cdab619a3a4.jpg" alt="Signature" class="hero-sig" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════════ SKILLS / BENTO ════════════ -->
+        <section id="skills">
+            <div class="section">
+                <div class="section-label reveal"><span class="dot"></span> Expertise</div>
+                <div class="section-head reveal">
+                    <h2>Areas of <span class="grad-cyan">Expertise</span></h2>
+                    <p>Bridging hardware and software to build intelligent, efficient systems that matter.</p>
+                </div>
+
+                <div class="bento-grid">
+                    <!-- Skill 1: Electrical — tall left -->
+                    <div class="bento-item bento-1 bento-skill reveal">
+                        <div class="bento-icon" style="background:rgba(251,146,60,0.1);">
+                            <i data-lucide="cpu" style="width:24px;height:24px;color:var(--orange);"></i>
+                        </div>
+                        <h3>Electrical &amp; Electronics</h3>
+                        <p>Designing and implementing robust electronic systems, power electronics, embedded firmware, and intricate control architectures.</p>
+                        <div class="tags">
+                            <span class="tag">Power Electronics</span>
+                            <span class="tag">Control Systems</span>
+                            <span class="tag">Arduino / ESP32</span>
+                            <span class="tag">Circuit Design</span>
+                            <span class="tag">DSO / Lab Instruments</span>
+                        </div>
+                    </div>
+
+                    <!-- Skill 2: AI/ML — tall center -->
+                    <div class="bento-item bento-2 bento-skill reveal">
+                        <div class="bento-icon" style="background:rgba(168,85,247,0.1);">
+                            <i data-lucide="brain-circuit" style="width:24px;height:24px;color:#a855f7;"></i>
+                        </div>
+                        <h3>AI, ML &amp; Simulation</h3>
+                        <p>Building intelligent detection algorithms, generating training datasets, and real-time HIL simulation with cutting-edge tools.</p>
+                        <div class="tags">
+                            <span class="tag">MATLAB &amp; Simulink</span>
+                            <span class="tag">OPAL-RT (HIL)</span>
+                            <span class="tag">Python</span>
+                            <span class="tag">Machine Learning</span>
+                            <span class="tag">SVPWM</span>
+                        </div>
+                    </div>
+
+                    <!-- Stat: Projects -->
+                    <div class="bento-item bento-3 bento-stat reveal">
+                        <div class="stat-num grad-main" data-count="5">0</div>
+                        <div class="stat-label">Projects Completed</div>
+                    </div>
+
+                    <!-- Stat: Certs -->
+                    <div class="bento-item bento-4 bento-stat reveal">
+                        <div class="stat-num grad-cyan" data-count="4">0</div>
+                        <div class="stat-label">Certifications</div>
+                    </div>
+
+                    <!-- Skill 3: Web Dev — wide bottom-left -->
+                    <div class="bento-item bento-5 bento-skill reveal">
+                        <div class="bento-icon" style="background:rgba(34,211,238,0.08);">
+                            <i data-lucide="code-2" style="width:24px;height:24px;color:var(--cyan);"></i>
+                        </div>
+                        <h3>Web Development</h3>
+                        <p>Crafting responsive, dynamic websites and interactive interfaces with a strong focus on user experience and modern design systems.</p>
+                        <div class="tags">
+                            <span class="tag">HTML5 / CSS3</span>
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">Tailwind CSS</span>
+                            <span class="tag">WordPress</span>
+                            <span class="tag">Google Ads</span>
+                        </div>
+                    </div>
+
+                    <!-- Stat: Year -->
+                    <div class="bento-item bento-6 bento-stat reveal">
+                        <div class="stat-num grad-green">3rd</div>
+                        <div class="stat-label">Year B.Tech</div>
+                    </div>
+
+                    <!-- Stat: Degrees -->
+                    <div class="bento-item bento-7 bento-stat reveal">
+                        <div class="stat-num grad-main" data-count="2">0</div>
+                        <div class="stat-label">Degrees Pursued</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════════ PROJECTS ════════════ -->
+        <section id="projects" class="projects-wrap">
+            <div class="section">
+                <div class="section-label reveal"><span class="dot"></span> Work</div>
+                <div class="section-head reveal">
+                    <h2>Featured <span class="grad-main">Projects</span></h2>
+                    <p>Engineering and research developments spanning power electronics, robotics, and AI.</p>
+                </div>
+
+                <div class="projects-grid">
+                    <!-- P1: SVPWM -->
+                    <div class="project-card reveal">
+                        <div class="project-thumb" style="background:linear-gradient(135deg,#1e1b4b,#4c1d95);">
+                            <i data-lucide="activity" class="project-thumb-icon" style="width:56px;height:56px;"></i>
+                            <span class="project-status status-ongoing">Ongoing</span>
+                        </div>
+                        <div class="project-body">
+                            <h3>AI-Assisted SVPWM Sector Detection</h3>
+                            <p class="project-meta">Research — RMS Lab</p>
+                            <p>Developing an AI-assisted sector detection algorithm for 3-Level Space Vector PWM in multilevel inverter control. Training datasets generated via MATLAB/Simulink; real-time HIL implementation explored on OPAL-RT.</p>
+                            <div class="tags">
+                                <span class="tag-colored" style="color:var(--indigo);border:1px solid rgba(129,140,248,0.2);background:rgba(129,140,248,0.06);">MATLAB/Simulink</span>
+                                <span class="tag-colored" style="color:#a855f7;border:1px solid rgba(168,85,247,0.2);background:rgba(168,85,247,0.06);">AI / ML</span>
+                                <span class="tag-colored" style="color:var(--cyan);border:1px solid rgba(34,211,238,0.2);background:rgba(34,211,238,0.06);">OPAL-RT HIL</span>
+                                <span class="tag-colored" style="color:var(--green);border:1px solid rgba(52,211,153,0.2);background:rgba(52,211,153,0.06);">Power Electronics</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- P2: Spoon -->
+                    <div class="project-card reveal">
+                        <div class="project-thumb" style="background:linear-gradient(135deg,#064e3b,#065f46);">
+                            <i data-lucide="hand" class="project-thumb-icon" style="width:56px;height:56px;"></i>
+                        </div>
+                        <div class="project-body">
+                            <h3>Active Stabilization Spoon</h3>
+                            <p class="project-meta">Innovation Odyssey</p>
+                            <p>2-axis servo motor-based active stabilization spoon for individuals with hand tremors (Parkinson's disease). Real-time motion compensation reduces vibration amplitude for improved daily usability.</p>
+                            <div class="tags">
+                                <span class="tag-colored" style="color:var(--green);border:1px solid rgba(52,211,153,0.2);background:rgba(52,211,153,0.06);">Embedded Systems</span>
+                                <span class="tag-colored" style="color:var(--amber);border:1px solid rgba(251,191,36,0.2);background:rgba(251,191,36,0.06);">Servo Motors</span>
+                                <span class="tag-colored" style="color:var(--pink);border:1px solid rgba(244,114,182,0.2);background:rgba(244,114,182,0.06);">Healthcare Tech</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- P3: Maze Robot -->
+                    <div class="project-card reveal">
+                        <div class="project-thumb" style="background:linear-gradient(135deg,#7c2d12,#92400e);">
+                            <i data-lucide="bot" class="project-thumb-icon" style="width:56px;height:56px;"></i>
+                        </div>
+                        <div class="project-body">
+                            <h3>Maze-Solver Robot</h3>
+                            <p class="project-meta">Hardware Design</p>
+                            <p>Designed and built a maze-solver using two DC motors and a custom chassis. Integrated three IR sensors for path detection and a rotating front caster for smoother turning and efficient navigation.</p>
+                            <div class="tags">
+                                <span class="tag-colored" style="color:var(--orange);border:1px solid rgba(251,146,60,0.2);background:rgba(251,146,60,0.06);">Robotics</span>
+                                <span class="tag-colored" style="color:var(--red);border:1px solid rgba(248,113,113,0.2);background:rgba(248,113,113,0.06);">IR Sensors</span>
+                                <span class="tag-colored" style="color:var(--amber);border:1px solid rgba(251,191,36,0.2);background:rgba(251,191,36,0.06);">Hardware Design</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- P4: H-Bridge -->
+                    <div class="project-card reveal">
+                        <div class="project-thumb" style="background:linear-gradient(135deg,#1e3a5f,#1e40af);">
+                            <i data-lucide="zap" class="project-thumb-icon" style="width:56px;height:56px;"></i>
+                        </div>
+                        <div class="project-body">
+                            <h3>MOSFET H-Bridge Inverter</h3>
+                            <p class="project-meta">EPSD Lab</p>
+                            <p>MOSFET-based H-Bridge inverter using SG3525 PWM controller and IR2110 gate driver. Validated switching performance and captured output waveforms using a Digital Storage Oscilloscope.</p>
+                            <div class="tags">
+                                <span class="tag-colored" style="color:var(--blue);border:1px solid rgba(96,165,250,0.2);background:rgba(96,165,250,0.06);">Power Electronics</span>
+                                <span class="tag-colored" style="color:var(--indigo);border:1px solid rgba(129,140,248,0.2);background:rgba(129,140,248,0.06);">MOSFET / PWM</span>
+                                <span class="tag-colored" style="color:var(--cyan);border:1px solid rgba(34,211,238,0.2);background:rgba(34,211,238,0.06);">DSO Testing</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- P5: Amplifier — wide -->
+                    <div class="project-card project-wide reveal">
+                        <div class="project-inner">
+                            <div class="project-thumb" style="background:linear-gradient(135deg,#1c1917,#292524);">
+                                <i data-lucide="speaker" class="project-thumb-icon" style="width:56px;height:56px;"></i>
+                            </div>
+                            <div class="project-body">
+                                <h3>Class A Amplifier Design</h3>
+                                <p class="project-meta">Semester 3 Project — Analog Electronics</p>
+                                <p>Designed and simulated a Class A audio amplifier targeting low harmonic distortion. The project covered biasing techniques, component selection, DC operating point analysis, and performance evaluation using simulation software.</p>
+                                <div class="tags">
+                                    <span class="tag">Analog Electronics</span>
+                                    <span class="tag">Circuit Design</span>
+                                    <span class="tag">Simulation</span>
+                                    <span class="tag">Biasing Analysis</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- JEE Notes -->
+                    <div class="project-card reveal" style="border-color:rgba(251,191,36,0.2);">
+                        <div class="project-thumb" style="background:linear-gradient(135deg,#451a03,#78350f);">
+                            <span style="font-size:3.5rem;">📓</span>
+                            <span class="project-status status-open">Open Access</span>
+                        </div>
+                        <div class="project-body">
+                            <h3>JEE Preparation Notes</h3>
+                            <p class="project-meta">Handwritten Study Resource</p>
+                            <p>My complete handwritten notes from JEE preparation — covering Physics, Chemistry, and Mathematics. Carefully curated for clarity and exam readiness.</p>
+                            <div class="tags" style="margin-bottom:1rem;">
+                                <span class="tag-colored" style="color:var(--amber);border:1px solid rgba(251,191,36,0.2);background:rgba(251,191,36,0.06);">Physics</span>
+                                <span class="tag-colored" style="color:var(--green);border:1px solid rgba(52,211,153,0.2);background:rgba(52,211,153,0.06);">Chemistry</span>
+                                <span class="tag-colored" style="color:var(--blue);border:1px solid rgba(96,165,250,0.2);background:rgba(96,165,250,0.06);">Mathematics</span>
+                            </div>
+                            <a href="jee-notes.html" target="_blank" style="display:inline-flex;align-items:center;gap:.4rem;font-size:.85rem;font-weight:600;color:var(--amber);">
+                                Browse Notes <i data-lucide="external-link" style="width:14px;height:14px;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════════ EDUCATION ════════════ -->
+        <section id="education">
+            <div class="section">
+                <div class="section-label reveal"><span class="dot"></span> Background</div>
+                <div class="section-head reveal">
+                    <h2>Education &amp; <span class="grad-green">Experience</span></h2>
+                    <p>Academic foundations and real-world roles that shaped my engineering journey.</p>
+                </div>
+
+                <div class="edu-grid">
+                    <!-- LEFT COL -->
+                    <div>
+                        <div class="edu-col-title">
+                            <i data-lucide="graduation-cap" style="width:18px;height:18px;color:var(--indigo);"></i> Education
+                        </div>
+
+                        <div class="timeline-card reveal">
+                            <img src="OIP.jpg" alt="Nirma University" class="edu-logo" onerror="this.style.display='none'">
+                            <div class="edu-title">Institute of Technology, Nirma University</div>
+                            <div class="edu-sub">B.Tech — Electrical Engineering <span>| Batch of 2027</span></div>
+                            <div class="coursework">
+                                <div class="cw-item"><i data-lucide="check" style="width:13px;height:13px;color:var(--indigo);flex-shrink:0;"></i> Power Systems</div>
+                                <div class="cw-item"><i data-lucide="check" style="width:13px;height:13px;color:var(--indigo);flex-shrink:0;"></i> Control Systems</div>
+                                <div class="cw-item"><i data-lucide="check" style="width:13px;height:13px;color:var(--indigo);flex-shrink:0;"></i> Power Electronics</div>
+                                <div class="cw-item"><i data-lucide="check" style="width:13px;height:13px;color:var(--indigo);flex-shrink:0;"></i> Microcontrollers</div>
+                                <div class="cw-item"><i data-lucide="check" style="width:13px;height:13px;color:var(--indigo);flex-shrink:0;"></i> Analog Electronics</div>
+                                <div class="cw-item"><i data-lucide="check" style="width:13px;height:13px;color:var(--indigo);flex-shrink:0;"></i> Communication Systems</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-card reveal" style="border-left-color:var(--cyan);">
+                            <div class="edu-title">Institute of Technology, Nirma University</div>
+                            <div class="edu-sub" style="color:var(--cyan);">Minor — VLSI Design <span>| Ongoing</span></div>
+                            <div class="coursework">
+                                <div class="cw-item"><i data-lucide="check" style="width:13px;height:13px;color:var(--cyan);flex-shrink:0;"></i> Digital Logic Design</div>
+                                <div class="cw-item"><i data-lucide="check" style="width:13px;height:13px;color:var(--cyan);flex-shrink:0;"></i> CMOS Technology</div>
+                                <div class="cw-item"><i data-lucide="check" style="width:13px;height:13px;color:var(--cyan);flex-shrink:0;"></i> Hardware Description</div>
+                                <div class="cw-item"><i data-lucide="check" style="width:13px;height:13px;color:var(--cyan);flex-shrink:0;"></i> IC Design Flow</div>
+                            </div>
+                        </div>
+
+                        <hr class="divider">
+
+                        <div class="edu-col-title">
+                            <i data-lucide="briefcase" style="width:18px;height:18px;color:var(--green);"></i> Experience &amp; Roles
+                        </div>
+
+                        <div class="timeline-card reveal" style="border-left-color:var(--green);">
+                            <div class="exp-org">Computer Society of India (CSI)</div>
+                            <div class="exp-role">Executive Member — Nirma University Chapter</div>
+                            <div class="exp-desc">Organized coding competitions and technical workshops. Enhanced skills in DSA and competitive programming.</div>
+                        </div>
+
+                        <div class="timeline-card reveal" style="border-left-color:var(--green);">
+                            <div class="exp-org">Freelancer</div>
+                            <div class="exp-role">Web Developer &amp; Digital Marketer</div>
+                            <div class="exp-desc">Freelance website development and Google Ads campaign management for multiple clients across industries.</div>
+                        </div>
+
+                        <div class="ncc-grid reveal">
+                            <div class="ncc-card">
+                                <span class="ncc-badge badge-ncc">NCC</span>
+                                <div style="font-size:.9rem;font-weight:700;margin-bottom:.4rem;">National Cadet Corps</div>
+                                <p>Cadet — Leadership training, discipline, and national integration through structured military exposure.</p>
+                            </div>
+                            <div class="ncc-card">
+                                <span class="ncc-badge badge-nss">NSS</span>
+                                <div style="font-size:.9rem;font-weight:700;margin-bottom:.4rem;">National Service Scheme</div>
+                                <p>Volunteer — 7-day residential social outreach camps &amp; ongoing community service initiatives.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COL -->
+                    <div>
+                        <div class="edu-col-title">
+                            <i data-lucide="award" style="width:18px;height:18px;color:var(--amber);"></i> Certifications
+                        </div>
+
+                        <a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=b11d84ae-a235-4d9b-85a2-b82c5ba7e3d1&" target="_blank" class="cert-item reveal">
+                            <div class="cert-icon" style="background:rgba(251,146,60,0.1);">
+                                <i data-lucide="bar-chart-2" style="width:20px;height:20px;color:var(--orange);"></i>
+                            </div>
+                            <div class="cert-info"><h4>MATLAB Onramp</h4><p>MathWorks — MATLAB Academy</p></div>
+                            <i data-lucide="arrow-right" style="width:16px;height:16px;" class="cert-arrow"></i>
+                        </a>
+
+                        <a href="https://www.guvi.in/share-certificate/w9m8Ut00251RL264H9" target="_blank" class="cert-item reveal">
+                            <div class="cert-icon" style="background:rgba(168,85,247,0.1);">
+                                <i data-lucide="bot" style="width:20px;height:20px;color:#a855f7;"></i>
+                            </div>
+                            <div class="cert-info"><h4>Artificial Intelligence</h4><p>GUVI Geek Networks, IITM</p></div>
+                            <i data-lucide="arrow-right" style="width:16px;height:16px;" class="cert-arrow"></i>
+                        </a>
+
+                        <a href="https://www.guvi.in/share-certificate/711q6939wgc44K5mP3" target="_blank" class="cert-item reveal">
+                            <div class="cert-icon" style="background:rgba(96,165,250,0.1);">
+                                <i data-lucide="terminal" style="width:20px;height:20px;color:var(--blue);"></i>
+                            </div>
+                            <div class="cert-info"><h4>Python Programming</h4><p>GUVI Geek Networks, IITM</p></div>
+                            <i data-lucide="arrow-right" style="width:16px;height:16px;" class="cert-arrow"></i>
+                        </a>
+
+                        <a href="https://www.udemy.com/certificate/UC-c9643411-517b-4b54-aea0-64c9c09f89a6/" target="_blank" class="cert-item reveal">
+                            <div class="cert-icon" style="background:rgba(244,114,182,0.08);">
+                                <i data-lucide="layout" style="width:20px;height:20px;color:var(--pink);"></i>
+                            </div>
+                            <div class="cert-info"><h4>WordPress Website Development</h4><p>Udemy</p></div>
+                            <i data-lucide="arrow-right" style="width:16px;height:16px;" class="cert-arrow"></i>
+                        </a>
+
+                        <div class="stats-mini reveal">
+                            <div class="stat-card">
+                                <div class="val grad-main" data-count="5">0</div>
+                                <div class="lbl">Projects Completed</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="val grad-cyan" data-count="4">0</div>
+                                <div class="lbl">Certifications</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="val grad-green">3rd</div>
+                                <div class="lbl">Year B.Tech</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="val grad-main" data-count="2">0</div>
+                                <div class="lbl">Degrees Pursued</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════════ CONTACT ════════════ -->
+        <section id="contact" class="contact-wrap">
+            <div class="section">
+                <div class="section-label reveal"><span class="dot"></span> Contact</div>
+                <div class="section-head reveal">
+                    <h2>Let's Build Something <span class="grad-main">Together</span></h2>
+                    <p>Have a project idea, collaboration, or just want to connect? I'd love to hear from you.</p>
+                </div>
+
+                <div class="contact-grid">
+                    <div class="reveal">
+                        <p class="contact-desc">
+                            I'm currently open to research collaborations, internship opportunities, and interesting
+                            freelance projects. Whether it's power electronics, AI/ML, or web development — let's talk.
+                        </p>
+                        <div class="response-box">
+                            <div class="response-label">Response time</div>
+                            <div class="response-status">
+                                <span class="response-dot"></span>
+                                Usually within 24 hours
+                            </div>
+                        </div>
+                        <div class="contact-links">
+                            <a href="https://github.com/smitpate/" target="_blank" class="contact-link">
+                                <div class="contact-link-icon" style="background:rgba(255,255,255,0.05);">
+                                    <i data-lucide="github" style="width:18px;height:18px;"></i>
+                                </div>
+                                <div>
+                                    <div class="contact-link-name">GitHub</div>
+                                    <div class="contact-link-handle">github.com/smitpate</div>
+                                </div>
+                            </a>
+                            <a href="https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=smit-patel-6a8b87261" target="_blank" class="contact-link">
+                                <div class="contact-link-icon" style="background:rgba(96,165,250,0.08);">
+                                    <i data-lucide="linkedin" style="width:18px;height:18px;color:var(--blue);"></i>
+                                </div>
+                                <div>
+                                    <div class="contact-link-name">LinkedIn</div>
+                                    <div class="contact-link-handle">smit-patel-6a8b87261</div>
+                                </div>
+                            </a>
+                            <a href="https://www.instagram.com/smit.patel.123" target="_blank" class="contact-link">
+                                <div class="contact-link-icon" style="background:rgba(244,114,182,0.08);">
+                                    <i data-lucide="instagram" style="width:18px;height:18px;color:var(--pink);"></i>
+                                </div>
+                                <div>
+                                    <div class="contact-link-name">Instagram</div>
+                                    <div class="contact-link-handle">@smit.patel.123</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="reveal">
+                        <div class="typeform-box">
+                            <div data-tf-live="01KMMEBAJS8KH9JFXGE7DPDWKZ" style="width:100%;height:520px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ═══ MARQUEE ═══ -->
+    <div class="marquee-wrap">
+        <div class="marquee-track">
+            <div class="marquee-item">LET'S BUILD SOMETHING AMAZING <span class="sep">✦</span></div>
+            <div class="marquee-item">POWER ELECTRONICS <span class="sep">✦</span></div>
+            <div class="marquee-item">AI & MACHINE LEARNING <span class="sep">✦</span></div>
+            <div class="marquee-item">EMBEDDED SYSTEMS <span class="sep">✦</span></div>
+            <div class="marquee-item">WEB DEVELOPMENT <span class="sep">✦</span></div>
+            <div class="marquee-item">LET'S BUILD SOMETHING AMAZING <span class="sep">✦</span></div>
+            <div class="marquee-item">POWER ELECTRONICS <span class="sep">✦</span></div>
+            <div class="marquee-item">AI & MACHINE LEARNING <span class="sep">✦</span></div>
+            <div class="marquee-item">EMBEDDED SYSTEMS <span class="sep">✦</span></div>
+            <div class="marquee-item">WEB DEVELOPMENT <span class="sep">✦</span></div>
+        </div>
+    </div>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="footer">
+        <div class="foot-logo">Smit<span>Patel</span>.</div>
+        <p class="foot-copy">&copy; <span id="year"></span> Smit Patel — All rights reserved.</p>
+        <div class="foot-links">
+            <a href="https://github.com/smitpate/" target="_blank" aria-label="GitHub"><i data-lucide="github" style="width:18px;height:18px;"></i></a>
+            <a href="https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=smit-patel-6a8b87261" target="_blank" aria-label="LinkedIn"><i data-lucide="linkedin" style="width:18px;height:18px;"></i></a>
+        </div>
+    </footer>
+
+    <!-- ═══ SCRIPTS ═══ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="//embed.typeform.com/next/embed.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
